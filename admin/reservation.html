@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservasi - RescueGo</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <img
+          src="assets/images/RescueGo-SideBarLogo.svg"
+          alt="Logo"
+          class="logo"
+        />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img
+          src="assets/images/AvatarProfile-MockUp.svg"
+          alt="Profil"
+          class="profile-pic"
+        />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <div class="dashboard-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="reservation.html" class="nav-link active">Reservasi</a>
+          <a href="#" class="nav-link">Supir</a>
+          <a href="#" class="nav-link">Ambulans</a>
+          <a href="#" class="nav-link">Perbaikan</a>
+          <a href="#" class="nav-link">Pengguna</a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="index.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <!-- Konten Reservasi -->
+      <main class="main-content">
+        <section>
+          <h2>Reservasi</h2>
+          <div class="table-container with-border">
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pasien</th>
+                  <th>Keterangan</th>
+                  <th>Status</th>
+                  <th>Supir</th>
+                  <th>Ambulans</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Abdul Wahid</td>
+                  <td>Kecelakaan</td>
+                  <td class="status-cell">Pending</td>
+                  <td>Abdul Hasan</td>
+                  <td>Toyota Hiace</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Abdul Wahid</td>
+                  <td>Kecelakaan</td>
+                  <td class="status-cell">Pending</td>
+                  <td>Abdul Hasan</td>
+                  <td>Toyota Hiace</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Abdul Wahid</td>
+                  <td>Kecelakaan</td>
+                  <td class="status-cell">Pending</td>
+                  <td>Abdul Hasan</td>
+                  <td>Toyota Hiace</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Abdul Wahid</td>
+                  <td>Kecelakaan</td>
+                  <td class="status-cell">Pending</td>
+                  <td>Abdul Hasan</td>
+                  <td>Toyota Hiace</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Abdul Wahid</td>
+                  <td>Kecelakaan</td>
+                  <td class="status-cell">Pending</td>
+                  <td>Abdul Hasan</td>
+                  <td>Toyota Hiace</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Detail Reservasi -->
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Pasien</h4>
+            <p>Nama: Abdul Wahid</p>
+            <p>Umur: 35</p>
+            <p>Jenis Kelamin: Laki-laki</p>
+            <p>Keterangan: Kecelakaan</p>
+          </div>
+          <div class="column">
+            <h4>Reservasi</h4>
+            <p>Supir: Abdul Hasan</p>
+            <p>Kendaraan: Toyota Hiace</p>
+            <p>Status: <span id="statusText">Pending</span></p>
+            <p>Timestamp: 14.30</p>
+          </div>
+        </div>
+        <div class="status-control">
+          <label for="status">Ganti Status</label>
+          <select id="status">
+            <option>Pending</option>
+            <option>Diterima</option>
+            <option>Menuju Lokasi</option>
+            <option>Selesai</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout modal -->
+    <div id="logoutModal">
+      <div id="logoutModalContent">
+        <h2 style="text-align: center; font-size: 18px; margin-bottom: 16px">
+          Apakah Anda yakin ingin keluar?
+        </h2>
+        <div style="display: flex; justify-content: space-between; gap: 10px">
+          <button
+            id="cancelLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 1px solid #5b2eff;
+              background: #fff;
+              color: #5b2eff;
+              border-radius: 6px;
+            "
+          >
+            Batal
+          </button>
+          <button
+            id="confirmLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              background: #5b2eff;
+              color: white;
+              border: none;
+              border-radius: 6px;
+            "
+          >
+            Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <script src="js/script.js"></script>
+    <script src="js/logoutModal.js"></script>
+  </body>
+</html>
