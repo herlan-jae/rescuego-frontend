@@ -845,12 +845,10 @@ button:hover {
   border-radius: 6px;
 }
 
-/* Utility class to hide element visually but keep it accessible */
 .invisible {
   visibility: hidden;
 }
 
-/* tambahan */
 .section-header {
   display: flex;
   justify-content: space-between;

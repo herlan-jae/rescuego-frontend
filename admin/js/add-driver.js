@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Ambil elemen-elemen yang diperlukan dari DOM
   const addDriverOverlay = document.getElementById("addDriverOverlay");
   const addDriverForm = document.getElementById("addDriverForm");
   const cancelAddDriverBtn = document.getElementById("cancelAddDriver");
   const showAddDriverBtn = document.getElementById("showAddDriverForm");
   const driverTableBody = document.getElementById("driverTableBody");
 
-  // --- Logika untuk Menampilkan/Menyembunyikan Popup ---
-  // Tampilkan popup saat tombol "+ Tambah" diklik
   if (showAddDriverBtn) {
     showAddDriverBtn.addEventListener("click", () => {
       if (addDriverOverlay) {
@@ -15,8 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Sembunyikan popup saat tombol "Batal" diklik
   if (cancelAddDriverBtn) {
     cancelAddDriverBtn.addEventListener("click", () => {
       if (addDriverOverlay) {
@@ -24,8 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Sembunyikan popup saat area di luar popup diklik
   if (addDriverOverlay) {
     addDriverOverlay.addEventListener("click", (e) => {
       if (e.target === addDriverOverlay) {
@@ -33,11 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // --- Logika untuk Menangani Pengiriman Formulir ---
   if (addDriverForm) {
     addDriverForm.addEventListener("submit", function (e) {
-      e.preventDefault(); // Mencegah form dari pengiriman standar
+      e.preventDefault();
 
       const formData = new FormData(addDriverForm);
       const data = Object.fromEntries(formData.entries());
