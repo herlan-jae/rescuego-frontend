@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambulans - RescueGo</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <img
+          src="assets/images/RescueGo-SideBarLogo.svg"
+          alt="Logo"
+          class="logo"
+        />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img
+          src="assets/images/AvatarProfile-MockUp.svg"
+          alt="Profil"
+          class="profile-pic"
+        />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <div class="dashboard-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="reservation.html" class="nav-link">Reservasi</a>
+          <a href="supir.html" class="nav-link">Supir</a>
+          <a href="ambulans.html" class="nav-link active">Ambulans</a>
+          <a href="#" class="nav-link">Perbaikan</a>
+          <a href="#" class="nav-link">Pengguna</a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="index.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <!-- Konten Ambulans -->
+      <main class="main-content">
+        <section>
+          <h2>Ambulans</h2>
+          <div class="table-container with-border">
+            <!-- Add Ambulance -->
+            <div class="section-header">
+            <h2>Ambulans</h2>
+            <button id="showAddAmbulanceForm" class="btn-primary">+ Tambah</button>
+            </div>
+
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nomor Polisi</th>
+                  <th>Tipe</th>
+                  <th>Merek/Model</th>
+                  <th>Status</th>
+                  <th>Lokasi</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="ambulanceTableBody">
+                <tr>
+                  <td>1</td>
+                  <td>B 1111 BB</td>
+                  <td>Basic</td>
+                  <td>Toyota Hiace</td>
+                  <td class="status-cell">Aktif</td>
+                  <td>Jakarta Pusat</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add Ambulance Screen -->
+    <div class="popup-overlay" id="addAmbulanceOverlay">
+    <div class="popup add-ambulance-popup">
+        <h3 class="popup-title">Tambah Baru</h3>
+        <form id="addAmbulanceForm" class="ambulance-form">
+        <div class="form-grid">
+            <div class="form-group">
+            <label>Nomor Polisi</label>
+            <input type="text" name="license_plate" />
+            </div>
+            <div class="form-group">
+            <label>Tahun</label>
+            <input type="number" name="year" />
+            </div>
+            <div class="form-group">
+            <label>Tipe</label>
+            <input type="text" name="type" />
+            </div>
+            <div class="form-group">
+            <label>Kapasitas</label>
+            <input type="number" name="capacity" />
+            </div>
+            <div class="form-group">
+            <label>Brand</label>
+            <input type="text" name="brand" />
+            </div>
+            <div class="form-group">
+            <label>Kota</label>
+            <input type="text" name="city" />
+            </div>
+            <div class="form-group">
+            <label>Model</label>
+            <input type="text" name="model"/>
+            </div>
+            <div class="form-group">
+            <label>Fasilitas</label>
+            <input type="text" name="facilities" />
+            </div>
+        </div>
+        <div class="form-group center">
+            <label>Status</label>
+            <select name="status">
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Tidak Aktif</option>
+            <option value="perbaikan">Dalam Perbaikan</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-outline" id="cancelAddAmbulance">Batal</button>
+            <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Detail Ambulan -->
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Ambulans</h4>
+            <p>Nomor Polisi: B 1111 BB</p>
+            <p>Tipe: Basic</p>
+            <p>Brand: Toyota Hiace</p>
+            <p>Model: Hiace</p>
+          </div>
+          <div class="column">
+            <h4 class="invisible">Detail Lanjutan</h4>
+            <p>Tahun: 2021 </p>
+            <p>Kapasitas: 1</p>
+            <p>Kota: Jakarta Pusat</p>
+            <p>Fasilitas: P3K</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout modal -->
+    <div id="logoutModal">
+      <div id="logoutModalContent">
+        <h2 style="text-align: center; font-size: 18px; margin-bottom: 16px">
+          Apakah Anda yakin ingin keluar?
+        </h2>
+        <div style="display: flex; justify-content: space-between; gap: 10px">
+          <button
+            id="cancelLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 1px solid #5b2eff;
+              background: #fff;
+              color: #5b2eff;
+              border-radius: 6px;
+            "
+          >
+            Batal
+          </button>
+          <button
+            id="confirmLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              background: #5b2eff;
+              color: white;
+              border: none;
+              border-radius: 6px;
+            "
+          >
+            Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <script src="js/script.js"></script>
+    <script src="js/logoutModal.js"></script>
+    <script src="js/add-ambulans.js"></script>
+  </body>
+</html>
