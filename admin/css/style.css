@@ -732,3 +732,145 @@ button:hover {
     display: block;
   }
 }
+
+/* Button Add Driver */
+.add-driver-popup {
+  background: #fff;
+  padding: 32px;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-title {
+  text-align: center;
+  color: #5b2eff;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.driver-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #5b2eff;
+}
+
+.driver-form input,
+.driver-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-group.center {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.btn-outline {
+  padding: 10px 24px;
+  background: #fff;
+  color: #5b2eff;
+  border: 2px solid #5b2eff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: #5b2eff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Button Add Ambulance */
+.add-ambulance-popup {
+  background: #fff;
+  padding: 32px;
+  border-radius: 20px;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.ambulance-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.ambulance-form input,
+.ambulance-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Utility class to hide element visually but keep it accessible */
+.invisible {
+  visibility: hidden;
+}
+
+/* tambahan */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 24px;
+  color: #5b2eff;
+  font-weight: bold;
+  margin: 0;
+}
+
+.btn-primary {
+  background-color: #5b2eff;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
