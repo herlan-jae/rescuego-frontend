@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Permintaan - RescueGo</title>
+    <link rel="icon" href="assets/img/RescueGo-SideBarLogo.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50 min-h-screen pb-24">
+    <!-- Konten yang akan diblur -->
+    <div id="mainContent">
+      <!-- Navbar -->
+      <header
+        class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-2">
+          <img
+            src="assets/img/RescueGo-SideBarLogo.svg"
+            alt="RescueGo Logo"
+            class="h-8"
+          />
+          <span class="font-bold text-lg">RescueGo</span>
+        </div>
+        <img
+          src="assets/img/AvatarProfile-MockUp.svg"
+          alt="Avatar"
+          class="h-10 w-10 rounded-full"
+        />
+      </header>
+
+      <!-- Main Content -->
+      <main class="px-6 mt-6">
+        <h1 class="text-sm text-gray-700 font-semibold mb-4">Permintaan</h1>
+
+        <!-- List Permintaan -->
+        <div class="space-y-3">
+          <button
+            class="open-detail bg-white rounded-xl shadow flex items-center justify-between p-4 w-full hover:bg-gray-100"
+          >
+            <div class="flex items-center space-x-2">
+              <span class="text-[#5B2EFF]">⚠️</span>
+              <p class="text-sm font-semibold text-[#5B2EFF]">
+                Abdul Wahid - Kecelakaan - RSUD Jakarta
+              </p>
+            </div>
+            <span class="text-[#5B2EFF] text-xl">›</span>
+          </button>
+
+          <button
+            class="open-detail bg-white rounded-xl shadow flex items-center justify-between p-4 w-full hover:bg-gray-100"
+          >
+            <div class="flex items-center space-x-2">
+              <span class="text-[#5B2EFF]">✔️</span>
+              <p class="text-sm font-semibold text-[#5B2EFF]">
+                Abdul Wahab - Kecelakaan - RSUD Jakarta
+              </p>
+            </div>
+            <span class="text-[#5B2EFF] text-xl">›</span>
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-white shadow-inner px-6 py-3 flex justify-between items-center border-t z-40"
+    >
+      <a
+        href="dashboard.html"
+        class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]"
+      >
+        <img src="assets/img/Home-Button.svg" alt="Beranda" class="h-6 w-6" />
+        <span class="text-xs mt-1">Beranda</span>
+      </a>
+      <a href="request.html" class="flex flex-col items-center text-[#5B2EFF]">
+        <div class="bg-[#EFE8FF] p-2 rounded-full">
+          <img
+            src="assets/img/Request-Button-Active.svg"
+            alt="Request"
+            class="h-6 w-6"
+          />
+        </div>
+        <span class="text-xs mt-1 font-semibold">Request</span>
+      </a>
+      <a
+        href="vehicle.html"
+        class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]"
+      >
+        <img
+          src="assets/img/Vehicle-Button.svg"
+          alt="Kendaraan"
+          class="h-6 w-6"
+        />
+        <span class="text-xs mt-1">Kendaraan</span>
+      </a>
+      <a
+        href="profile.html"
+        class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]"
+      >
+        <img src="assets/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" />
+        <span class="text-xs mt-1">Profil</span>
+      </a>
+    </nav>
+
+    <!-- Modal Detail -->
+    <div
+      id="requestDetailModal"
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-start justify-center pt-24"
+    >
+      <div
+        id="modalBox"
+        class="bg-white rounded-xl shadow-lg w-full max-w-md p-6 opacity-0 scale-95 transition-all duration-200 relative"
+      >
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold text-[#5B2EFF] mx-auto">Detail</h2>
+          <button
+            id="closeDetail"
+            class="absolute right-4 text-[#5B2EFF] text-2xl font-bold hover:scale-110"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b pb-4">
+          <!-- Pasien -->
+          <div>
+            <h3 class="text-sm text-gray-700 font-bold mb-2">Pasien</h3>
+            <p class="text-sm">
+              <span class="font-semibold">Nama:</span> Abdul Wahid
+            </p>
+            <p class="text-sm"><span class="font-semibold">Umur:</span> 35</p>
+            <p class="text-sm">
+              <span class="font-semibold">Jenis Kelamin:</span> Laki-laki
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold">Keterangan:</span> Kecelakaan
+            </p>
+          </div>
+
+          <!-- Reservasi -->
+          <div>
+            <h3 class="text-sm text-gray-700 font-bold mb-2">Reservasi</h3>
+            <p class="text-sm">
+              <span class="font-semibold">Supir:</span> Abdul Hasan
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold">Kendaraan:</span> Toyota Hiace
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold">Status:</span> Pending
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold">Timestamp:</span> 14.30
+            </p>
+          </div>
+        </div>
+
+        <!-- Update Status -->
+        <div class="mt-6 text-center">
+          <h3 class="text-sm text-gray-700 font-bold mb-2">Perbarui Status</h3>
+          <select
+            class="border border-[#5B2EFF] text-[#5B2EFF] font-semibold rounded-md px-4 py-2"
+          >
+            <option>Pending</option>
+            <option>Diterima</option>
+            <option>Menuju Lokasi</option>
+            <option>Selesai</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="assets/js/request-detail-modal.js"></script>
+  </body>
+</html>
