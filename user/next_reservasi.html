@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buat Reservasi - RescueGo</title>
+    <link rel="icon" href="assets/img/RescueGo-SideBarLogo.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      input[type="radio"]:checked + label {
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen pb-16">
+    <!-- Header -->
+    <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <img src="assets/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
+        <span class="font-bold text-lg">RescueGo</span>
+      </div>
+      <img src="assets/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
+    </header>
+
+    <!-- Content -->
+    <main class="px-6 py-6">
+      <h2 class="text-[#5B2EFF] font-semibold text-lg mb-1 flex items-center">
+        <span class="mr-2 text-xl">🕒</span> Buat Reservasi
+      </h2>
+      <p class="text-sm text-gray-700 mb-4">Apa keadaan darurat kamu?</p>
+
+      <form id="formKeadaanDarurat" class="space-y-3">
+        <!-- Opsi radio -->
+        <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow">
+          <label for="darurat1" class="text-[#5B2EFF] text-base">Darurat Medis</label>
+          <input type="radio" name="keadaan" id="darurat1" value="Darurat Medis" class="accent-[#5B2EFF] w-5 h-5" />
+        </div>
+
+        <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow">
+          <label for="darurat2" class="text-[#5B2EFF] text-base">Kecelakaan Lalu Lintas</label>
+          <input type="radio" name="keadaan" id="darurat2" value="Kecelakaan Lalu Lintas" class="accent-[#5B2EFF] w-5 h-5" />
+        </div>
+
+        <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow">
+          <label for="darurat3" class="text-[#5B2EFF] text-base">Perpindahan Rumah Sakit</label>
+          <input type="radio" name="keadaan" id="darurat3" value="Perpindahan Rumah Sakit" class="accent-[#5B2EFF] w-5 h-5" />
+        </div>
+
+        <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow">
+          <label for="darurat4" class="text-[#5B2EFF] text-base">Perjalanan Rutin</label>
+          <input type="radio" name="keadaan" id="darurat4" value="Perjalanan Rutin" class="accent-[#5B2EFF] w-5 h-5" />
+        </div>
+
+        <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow">
+          <label for="darurat5" class="text-[#5B2EFF] text-base">Keadaan Darurat Lainnya</label>
+          <input type="radio" name="keadaan" id="darurat5" value="Keadaan Darurat Lainnya" class="accent-[#5B2EFF] w-5 h-5" />
+        </div>
+
+        <!-- Tombol Selanjutnya -->
+        <div class="text-right pt-4">
+          <button
+            type="submit"
+            class="bg-[#5B2EFF] hover:bg-[#4A25D3] text-white font-semibold px-6 py-2 rounded-xl"
+          >
+            Selanjutnya
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

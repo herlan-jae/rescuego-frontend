@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supir - RescueGo</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <img
+          src="assets/images/RescueGo-SideBarLogo.svg"
+          alt="Logo"
+          class="logo"
+        />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img
+          src="assets/images/AvatarProfile-MockUp.svg"
+          alt="Profil"
+          class="profile-pic"
+        />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <div class="dashboard-wrapper">
+      <!-- Sidebar -->
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="reservation.html" class="nav-link">Reservasi</a>
+          <a href="supir.html" class="nav-link active">Supir</a>
+          <a href="ambulans.html" class="nav-link">Ambulans</a>
+          <a href="#" class="nav-link">Perbaikan</a>
+          <a href="#" class="nav-link">Pengguna</a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="index.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <!-- Konten Supir -->
+      <main class="main-content">
+        <section>
+          <div class="section-header">
+            <h2>Supir</h2>
+            <button id="showAddDriverForm" class="btn-primary">+ Tambah</button>
+          </div>
+          <div class="table-container with-border">
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>SIM</th>
+                  <th>Status</th>
+                  <th>Kota</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="driverTableBody">
+                <tr>
+                  <td>1</td>
+                  <td>Abdul Hasan</td>
+                  <td>00-00-001</td>
+                  <td class="status-cell">Aktif</td>
+                  <td>Jakarta Pusat</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add Driver Screen -->
+    <div class="popup-overlay" id="addDriverOverlay">
+    <div class="popup add-driver-popup">
+        <h3 class="popup-title">Tambah Baru</h3>
+        <form id="addDriverForm" class="driver-form">
+        <div class="form-grid">
+            <div class="form-group">
+            <label>Nama Pengguna</label>
+            <input type="text" name="username" />
+            </div>
+            <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" />
+            </div>
+            <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" name="fullname" />
+            </div>
+            <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" />
+            </div>
+            <div class="form-group">
+            <label>Nomor Telepon</label>
+            <input type="tel" name="phone" />
+            </div>
+            <div class="form-group">
+            <label>Nomor SIM</label>
+            <input type="text" name="sim" />
+            </div>
+            <div class="form-group">
+            <label>Tanggal Lahir</label>
+            <input type="date" name="birthdate" />
+            </div>
+            <div class="form-group">
+            <label>Kota</label>
+            <input type="text" name="city" />
+            </div>
+        </div>
+        <div class="form-group center">
+            <label>Status</label>
+            <select name="status">
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-outline" id="cancelAddDriver">Batal</button>
+            <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Detail Supir -->
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail Supir</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Profil</h4>
+            <p>Nama: Abdul Hasan</p>
+            <p>Email: hasanabdul@gmail.com</p>
+            <p>Nomor Telepon: 08123456789</p>
+            <p>Tanggal Lahir: 19-09-1980</p>
+          </div>
+          <div class="column">
+            <h4>Profesional</h4>
+            <p>Nomor SIM: 00-00-001</p>
+            <p>Status: <span id="statusText">Aktif</span></p>
+            <p>Kota: Jakarta Pusat</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout modal -->
+    <div id="logoutModal">
+      <div id="logoutModalContent">
+        <h2 style="text-align: center; font-size: 18px; margin-bottom: 16px">
+          Apakah Anda yakin ingin keluar?
+        </h2>
+        <div style="display: flex; justify-content: space-between; gap: 10px">
+          <button
+            id="cancelLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 1px solid #5b2eff;
+              background: #fff;
+              color: #5b2eff;
+              border-radius: 6px;
+            "
+          >
+            Batal
+          </button>
+          <button
+            id="confirmLogout"
+            style="
+              flex: 1;
+              padding: 8px;
+              background: #5b2eff;
+              color: white;
+              border: none;
+              border-radius: 6px;
+            "
+          >
+            Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <script src="js/script.js"></script>
+    <script src="js/logoutModal.js"></script>
+    <script src="js/add-driver.js"></script>
+  </body>
+</html>
