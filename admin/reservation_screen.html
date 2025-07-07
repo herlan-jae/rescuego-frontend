@@ -4,25 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservasi - RescueGo</title>
+    <link rel="icon" href="assets/img/RescueGo-SideBarLogo.svg" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <!-- Navbar -->
     <header class="navbar">
       <div class="navbar-left">
-        <img
-          src="assets/images/RescueGo-SideBarLogo.svg"
-          alt="Logo"
-          class="logo"
-        />
+        <img src="assets/img/RescueGo-SideBarLogo.svg" alt="Logo" class="logo" />
         <span class="brand-text">RescueGo</span>
       </div>
       <div class="navbar-right">
-        <img
-          src="assets/images/AvatarProfile-MockUp.svg"
-          alt="Profil"
-          class="profile-pic"
-        />
+        <img src="assets/img/AvatarProfile-MockUp.svg" alt="Profil" class="profile-pic" />
         <button class="burger-menu" id="burgerMenu">&#9776;</button>
       </div>
     </header>
@@ -32,15 +25,15 @@
       <!-- Sidebar -->
       <aside class="sidebar sidebar-white">
         <nav class="nav-links">
-          <a href="dashboard.html" class="nav-link">Dashboard</a>
-          <a href="reservation.html" class="nav-link active">Reservasi</a>
-          <a href="supir.html" class="nav-link">Supir</a>
-          <a href="ambulans.html" class="nav-link">Ambulans</a>
-          <a href="#" class="nav-link">Perbaikan</a>
-          <a href="#" class="nav-link">Pengguna</a>
+          <a href="dashboard_screen.html" class="nav-link">Dashboard</a>
+          <a href="reservation_screen.html" class="nav-link active">Reservasi</a>
+          <a href="driver_screen.html" class="nav-link">Supir</a>
+          <a href="ambulance_screen.html" class="nav-link">Ambulans</a>
+          <a href="maintenance_screen.html" class="nav-link">Perbaikan</a>
+          <a href="user_screen.html" class="nav-link">Pengguna</a>
         </nav>
         <div class="sidebar-footer">
-          <a href="index.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <a href="login_screen.html" class="nav-link logout" id="logoutBtn">Keluar</a>
           <small class="version">RescueGo versi 1.0</small>
         </div>
       </aside>
@@ -151,36 +144,10 @@
     <!-- Logout modal -->
     <div id="logoutModal">
       <div id="logoutModalContent">
-        <h2 style="text-align: center; font-size: 18px; margin-bottom: 16px">
-          Apakah Anda yakin ingin keluar?
-        </h2>
+        <h2 style="text-align: center; font-size: 18px; margin-bottom: 16px">Apakah Anda yakin ingin keluar?</h2>
         <div style="display: flex; justify-content: space-between; gap: 10px">
-          <button
-            id="cancelLogout"
-            style="
-              flex: 1;
-              padding: 8px;
-              border: 1px solid #5b2eff;
-              background: #fff;
-              color: #5b2eff;
-              border-radius: 6px;
-            "
-          >
-            Batal
-          </button>
-          <button
-            id="confirmLogout"
-            style="
-              flex: 1;
-              padding: 8px;
-              background: #5b2eff;
-              color: white;
-              border: none;
-              border-radius: 6px;
-            "
-          >
-            Keluar
-          </button>
+          <button id="cancelLogout" style="flex: 1; padding: 8px; border: 1px solid #5b2eff; background: #fff; color: #5b2eff; border-radius: 6px">Batal</button>
+          <button id="confirmLogout" style="flex: 1; padding: 8px; background: #5b2eff; color: white; border: none; border-radius: 6px">Keluar</button>
         </div>
       </div>
     </div>
