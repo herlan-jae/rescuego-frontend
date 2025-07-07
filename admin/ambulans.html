@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservasi - RescueGo</title>
+    <title>Ambulans - RescueGo</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -33,9 +33,9 @@
       <aside class="sidebar sidebar-white">
         <nav class="nav-links">
           <a href="dashboard.html" class="nav-link">Dashboard</a>
-          <a href="reservation.html" class="nav-link active">Reservasi</a>
+          <a href="reservation.html" class="nav-link">Reservasi</a>
           <a href="supir.html" class="nav-link">Supir</a>
-          <a href="ambulans.html" class="nav-link">Ambulans</a>
+          <a href="ambulans.html" class="nav-link active">Ambulans</a>
           <a href="#" class="nav-link">Perbaikan</a>
           <a href="#" class="nav-link">Pengguna</a>
         </nav>
@@ -45,67 +45,34 @@
         </div>
       </aside>
 
-      <!-- Konten Reservasi -->
+      <!-- Konten Ambulans -->
       <main class="main-content">
         <section>
-          <h2>Reservasi</h2>
+          <div class="section-header">
+            <h2>Ambulans</h2>
+            <button id="showAddAmbulanceForm" class="btn-primary">+ Tambah</button>
+          </div>
           <div class="table-container with-border">
             <table class="table-reservasi">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Pasien</th>
-                  <th>Keterangan</th>
+                  <th>Nomor Polisi</th>
+                  <th>Tipe</th>
+                  <th>Merek/Model</th>
                   <th>Status</th>
-                  <th>Supir</th>
-                  <th>Ambulans</th>
+                  <th>Lokasi</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="ambulanceTableBody">
                 <tr>
                   <td>1</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
+                  <td>B 1111 BB</td>
+                  <td>Basic</td>
                   <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
+                  <td class="status-cell">Aktif</td>
+                  <td>Jakarta Pusat</td>
                   <td><span class="link-detail">Lihat</span></td>
                 </tr>
               </tbody>
@@ -115,35 +82,81 @@
       </main>
     </div>
 
-    <!-- Detail Reservasi -->
+    <!-- Add Ambulance Screen -->
+    <div class="popup-overlay" id="addAmbulanceOverlay">
+    <div class="popup add-ambulance-popup">
+        <h3 class="popup-title">Tambah Baru</h3>
+        <form id="addAmbulanceForm" class="ambulance-form">
+        <div class="form-grid">
+            <div class="form-group">
+            <label>Nomor Polisi</label>
+            <input type="text" name="license_plate" />
+            </div>
+            <div class="form-group">
+            <label>Tahun</label>
+            <input type="number" name="year" />
+            </div>
+            <div class="form-group">
+            <label>Tipe</label>
+            <input type="text" name="type" />
+            </div>
+            <div class="form-group">
+            <label>Kapasitas</label>
+            <input type="number" name="capacity" />
+            </div>
+            <div class="form-group">
+            <label>Brand</label>
+            <input type="text" name="brand" />
+            </div>
+            <div class="form-group">
+            <label>Kota</label>
+            <input type="text" name="city" />
+            </div>
+            <div class="form-group">
+            <label>Model</label>
+            <input type="text" name="model"/>
+            </div>
+            <div class="form-group">
+            <label>Fasilitas</label>
+            <input type="text" name="facilities" />
+            </div>
+        </div>
+        <div class="form-group center">
+            <label>Status</label>
+            <select name="status">
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Tidak Aktif</option>
+            <option value="perbaikan">Dalam Perbaikan</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-outline" id="cancelAddAmbulance">Batal</button>
+            <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Detail Ambulan -->
     <div class="popup-overlay" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
         <h3>Detail</h3>
         <div class="popup-content">
           <div class="column">
-            <h4>Pasien</h4>
-            <p>Nama: Abdul Wahid</p>
-            <p>Umur: 35</p>
-            <p>Jenis Kelamin: Laki-laki</p>
-            <p>Keterangan: Kecelakaan</p>
+            <h4>Ambulans</h4>
+            <p>Nomor Polisi: B 1111 BB</p>
+            <p>Tipe: Basic</p>
+            <p>Brand: Toyota Hiace</p>
+            <p>Model: Hiace</p>
           </div>
           <div class="column">
-            <h4>Reservasi</h4>
-            <p>Supir: Abdul Hasan</p>
-            <p>Kendaraan: Toyota Hiace</p>
-            <p>Status: <span id="statusText">Pending</span></p>
-            <p>Timestamp: 14.30</p>
+            <h4 class="invisible">Detail Lanjutan</h4>
+            <p>Tahun: 2021 </p>
+            <p>Kapasitas: 1</p>
+            <p>Kota: Jakarta Pusat</p>
+            <p>Fasilitas: P3K</p>
           </div>
-        </div>
-        <div class="status-control">
-          <label for="status">Ganti Status</label>
-          <select id="status">
-            <option>Pending</option>
-            <option>Diterima</option>
-            <option>Menuju Lokasi</option>
-            <option>Selesai</option>
-          </select>
         </div>
       </div>
     </div>
@@ -188,5 +201,6 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <script src="js/script.js"></script>
     <script src="js/logoutModal.js"></script>
+    <script src="js/add-ambulans.js"></script>
   </body>
 </html>

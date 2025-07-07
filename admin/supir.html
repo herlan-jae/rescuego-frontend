@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservasi - RescueGo</title>
+    <title>Supir - RescueGo</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -33,8 +33,8 @@
       <aside class="sidebar sidebar-white">
         <nav class="nav-links">
           <a href="dashboard.html" class="nav-link">Dashboard</a>
-          <a href="reservation.html" class="nav-link active">Reservasi</a>
-          <a href="supir.html" class="nav-link">Supir</a>
+          <a href="reservation.html" class="nav-link">Reservasi</a>
+          <a href="supir.html" class="nav-link active">Supir</a>
           <a href="ambulans.html" class="nav-link">Ambulans</a>
           <a href="#" class="nav-link">Perbaikan</a>
           <a href="#" class="nav-link">Pengguna</a>
@@ -45,67 +45,32 @@
         </div>
       </aside>
 
-      <!-- Konten Reservasi -->
+      <!-- Konten Supir -->
       <main class="main-content">
         <section>
-          <h2>Reservasi</h2>
+          <div class="section-header">
+            <h2>Supir</h2>
+            <button id="showAddDriverForm" class="btn-primary">+ Tambah</button>
+          </div>
           <div class="table-container with-border">
             <table class="table-reservasi">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Pasien</th>
-                  <th>Keterangan</th>
+                  <th>Nama</th>
+                  <th>SIM</th>
                   <th>Status</th>
-                  <th>Supir</th>
-                  <th>Ambulans</th>
+                  <th>Kota</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="driverTableBody">
                 <tr>
                   <td>1</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
                   <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Abdul Wahid</td>
-                  <td>Kecelakaan</td>
-                  <td class="status-cell">Pending</td>
-                  <td>Abdul Hasan</td>
-                  <td>Toyota Hiace</td>
+                  <td>00-00-001</td>
+                  <td class="status-cell">Aktif</td>
+                  <td>Jakarta Pusat</td>
                   <td><span class="link-detail">Lihat</span></td>
                 </tr>
               </tbody>
@@ -115,35 +80,79 @@
       </main>
     </div>
 
-    <!-- Detail Reservasi -->
+    <!-- Add Driver Screen -->
+    <div class="popup-overlay" id="addDriverOverlay">
+    <div class="popup add-driver-popup">
+        <h3 class="popup-title">Tambah Baru</h3>
+        <form id="addDriverForm" class="driver-form">
+        <div class="form-grid">
+            <div class="form-group">
+            <label>Nama Pengguna</label>
+            <input type="text" name="username" />
+            </div>
+            <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" />
+            </div>
+            <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" name="fullname" />
+            </div>
+            <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" />
+            </div>
+            <div class="form-group">
+            <label>Nomor Telepon</label>
+            <input type="tel" name="phone" />
+            </div>
+            <div class="form-group">
+            <label>Nomor SIM</label>
+            <input type="text" name="sim" />
+            </div>
+            <div class="form-group">
+            <label>Tanggal Lahir</label>
+            <input type="date" name="birthdate" />
+            </div>
+            <div class="form-group">
+            <label>Kota</label>
+            <input type="text" name="city" />
+            </div>
+        </div>
+        <div class="form-group center">
+            <label>Status</label>
+            <select name="status">
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="button" class="btn-outline" id="cancelAddDriver">Batal</button>
+            <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Detail Supir -->
     <div class="popup-overlay" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
-        <h3>Detail</h3>
+        <h3>Detail Supir</h3>
         <div class="popup-content">
           <div class="column">
-            <h4>Pasien</h4>
-            <p>Nama: Abdul Wahid</p>
-            <p>Umur: 35</p>
-            <p>Jenis Kelamin: Laki-laki</p>
-            <p>Keterangan: Kecelakaan</p>
+            <h4>Profil</h4>
+            <p>Nama: Abdul Hasan</p>
+            <p>Email: hasanabdul@gmail.com</p>
+            <p>Nomor Telepon: 08123456789</p>
+            <p>Tanggal Lahir: 19-09-1980</p>
           </div>
           <div class="column">
-            <h4>Reservasi</h4>
-            <p>Supir: Abdul Hasan</p>
-            <p>Kendaraan: Toyota Hiace</p>
-            <p>Status: <span id="statusText">Pending</span></p>
-            <p>Timestamp: 14.30</p>
+            <h4>Profesional</h4>
+            <p>Nomor SIM: 00-00-001</p>
+            <p>Status: <span id="statusText">Aktif</span></p>
+            <p>Kota: Jakarta Pusat</p>
           </div>
-        </div>
-        <div class="status-control">
-          <label for="status">Ganti Status</label>
-          <select id="status">
-            <option>Pending</option>
-            <option>Diterima</option>
-            <option>Menuju Lokasi</option>
-            <option>Selesai</option>
-          </select>
         </div>
       </div>
     </div>
@@ -188,5 +197,6 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <script src="js/script.js"></script>
     <script src="js/logoutModal.js"></script>
+    <script src="js/add-driver.js"></script>
   </body>
 </html>
