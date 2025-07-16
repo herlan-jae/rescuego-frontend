@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengguna - RescueGo</title>
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
+
+    <script src="/public/js/utils.js"></script>
+    <script src="/public/js/auth.js"></script>
+
+    <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="stylesheet" href="/src/admin/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar-left">
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="Logo" class="logo" />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img src="/public/img/AvatarProfile-MockUp.svg" alt="Profil" class="profile-pic" />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <div class="dashboard-wrapper">
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Dashboard
+          </a>
+          <a href="reservation_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Reservasi
+          </a>
+          <a href="driver_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Supir
+          </a>
+          <a href="ambulance_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Ambulans
+          </a>
+          <a href="maintenance_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Perbaikan
+          </a>
+          <a href="user_screen.html" class="nav-link active">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Pengguna
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="login_screen.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section>
+          <h2>Pengguna</h2>
+          <div class="table-container with-border">
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Pengguna</th>
+                  <th>Email</th>
+                  <th>Nomor Telepon</th>
+                  <th>Kota</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <tr>
+                  <td>1</td>
+                  <td>Abdul Wahid</td>
+                  <td>abdul.wahid@example.com</td>
+                  <td>08123456789</td>
+                  <td>Jakarta Pusat</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Siti Aminah</td>
+                  <td>siti.aminah@example.com</td>
+                  <td>08567890123</td>
+                  <td>Bandung</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Budi Santoso</td>
+                  <td>budi.santoso@example.com</td>
+                  <td>08789012345</td>
+                  <td>Surabaya</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Dewi Lestari</td>
+                  <td>dewi.lestari@example.com</td>
+                  <td>08210987654</td>
+                  <td>Yogyakarta</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail Pengguna</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Profil</h4>
+            <p>ID Pengguna: 1</p>
+            <p>Nama Lengkap: Abdul Wahid</p>
+            <p>Email: abdul.wahid@example.com</p>
+            <p>Nomor Telepon: 08123456789</p>
+          </div>
+          <div class="column">
+            <h4>Informasi Lain</h4>
+            <p>Tanggal Lahir: 1990-05-15</p>
+            <p>Jenis Kelamin: Laki-laki</p>
+            <p>Alamat: Jl. Sudirman No. 10</p>
+            <p>Kota: Jakarta Pusat</p>
+            <p>Status Akun: Aktif</p>
+          </div>
+        </div>
+        <div class="form-actions" style="justify-content: flex-end; gap: 10px; margin-top: 20px">
+          <button class="btn-primary" style="background-color: var(--accent-color)">Hapus</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="logoutModal" class="hidden">
+      <div id="logoutModalContent">
+        <h2 class="modal-title">Apakah Anda yakin ingin keluar?</h2>
+        <div class="modal-actions">
+          <button id="cancelLogout" class="btn-outline">Batal</button>
+          <button id="confirmLogout" class="btn-primary">Keluar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div id="snackbar" class="snackbar">
+      <span id="snackbarMessage"></span>
+    </div>
+
+    <script src="/public/js/logoutModal.js"></script>
+    <script>
+      // Panggil fungsi global logout modal dengan URL redirect yang sesuai
+      setupLogoutModal("login_screen.html");
+    </script>
+    <script src="/public/js/navActive.js"></script>
+    <script src="/src/admin/js/script.js"></script>
+  </body>
+</html>

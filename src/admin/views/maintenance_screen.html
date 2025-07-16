@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perbaikan - RescueGo</title>
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
+
+    <script src="/public/js/utils.js"></script>
+    <script src="/public/js/auth.js"></script>
+
+    <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="stylesheet" href="/src/admin/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar-left">
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="Logo" class="logo" />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img src="/public/img/AvatarProfile-MockUp.svg" alt="Profil" class="profile-pic" />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <div class="dashboard-wrapper">
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Dashboard
+          </a>
+          <a href="reservation_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Reservasi
+          </a>
+          <a href="driver_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Supir
+          </a>
+          <a href="ambulance_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Ambulans
+          </a>
+          <a href="maintenance_screen.html" class="nav-link active">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Perbaikan
+          </a>
+          <a href="user_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Pengguna
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="login_screen.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section>
+          <h2>Perbaikan</h2>
+          <div class="table-container with-border">
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Ambulans</th>
+                  <th>Keterangan</th>
+                  <th>Tanggal Pelaporan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>B 1111 BB (Toyota Hiace)</td>
+                  <td>Mesin sering mati mendadak</td>
+                  <td>2024-07-10</td>
+                  <td class="status-cell">Pending</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>B 2222 BB (Suzuki APV)</td>
+                  <td>Ban kempes</td>
+                  <td>2024-07-12</td>
+                  <td class="status-cell">Selesai</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>B 3333 BB (Ford Transit)</td>
+                  <td>Lampu depan pecah</td>
+                  <td>2024-07-14</td>
+                  <td class="status-cell">Dalam Proses</td>
+                  <td><span class="link-detail">Lihat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail Perbaikan</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Ambulans</h4>
+            <p>Nomor Polisi: B 1111 BB</p>
+            <p>Tipe: Basic</p>
+            <p>Merek/Model: Toyota Hiace</p>
+            <p>Keterangan: Mesin sering mati mendadak</p>
+          </div>
+          <div class="column">
+            <h4>Informasi Perbaikan</h4>
+            <p>ID Pelaporan: 001</p>
+            <p>Tanggal Pelaporan: 2024-07-10</p>
+            <p>Status: <span id="statusText">Pending</span></p>
+            <p>Prioritas: Tinggi</p>
+            <p>Estimasi Selesai: 2024-07-20</p>
+          </div>
+        </div>
+        <div class="status-control">
+          <label for="status">Ganti Status</label>
+          <select id="status">
+            <option>Pending</option>
+            <option>Dalam Proses</option>
+            <option>Selesai</option>
+            <option>Dibatalkan</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="btn-outline">Batal</button>
+          <button class="btn-primary">Update Status</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="logoutModal" class="hidden">
+      <div id="logoutModalContent">
+        <h2 class="modal-title">Apakah Anda yakin ingin keluar?</h2>
+        <div class="modal-actions">
+          <button id="cancelLogout" class="btn-outline">Batal</button>
+          <button id="confirmLogout" class="btn-primary">Keluar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div id="snackbar" class="snackbar">
+      <span id="snackbarMessage"></span>
+    </div>
+
+    <script src="/public/js/logoutModal.js"></script>
+    <script>
+      // Panggil fungsi global logout modal dengan URL redirect yang sesuai
+      setupLogoutModal("login_screen.html");
+    </script>
+    <script src="/public/js/navActive.js"></script>
+    <script src="/src/driver/js/script.js"></script>
+  </body>
+</html>

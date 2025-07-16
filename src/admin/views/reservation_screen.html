@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservasi - RescueGo</title>
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
+
+    <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="stylesheet" href="/src/admin/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar-left">
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="Logo" class="logo" />
+        <span class="brand-text">RescueGo</span>
+      </div>
+      <div class="navbar-right">
+        <img src="/public/img/AvatarProfile-MockUp.svg" alt="Profil" class="profile-pic" />
+        <button class="burger-menu" id="burgerMenu">&#9776;</button>
+      </div>
+    </header>
+
+    <div class="dashboard-wrapper">
+      <aside class="sidebar sidebar-white">
+        <nav class="nav-links">
+          <a href="dashboard_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Dashboard
+          </a>
+          <a href="reservation_screen.html" class="nav-link active">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Reservasi
+          </a>
+          <a href="driver_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Supir
+          </a>
+          <a href="ambulance_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Ambulans
+          </a>
+          <a href="maintenance_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Perbaikan
+          </a>
+          <a href="user_screen.html" class="nav-link">
+            <span class="nav-icon-wrapper"><i class="nav-icon"></i></span> Pengguna
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="login_screen.html" class="nav-link logout" id="logoutBtn">Keluar</a>
+          <small class="version">RescueGo versi 1.0</small>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section>
+          <h2>Reservasi</h2>
+          <div class="table-container with-border">
+            <table class="table-reservasi">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pasien</th>
+                  <th>Keterangan</th>
+                  <th>Status</th>
+                  <th>Supir</th>
+                  <th>Ambulans</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="reservationTableBody">
+                <tr>
+                  <td colspan="7" class="text-center py-4">Memuat data reservasi...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="popup-overlay hidden" id="popupOverlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopupBtn">&times;</span>
+        <h3>Detail</h3>
+        <div class="popup-content">
+          <div class="column">
+            <h4>Pasien</h4>
+            <p>Nama: <span id="detailPatientName"></span></p>
+            <p>Umur: <span id="detailPatientAge"></span></p>
+            <p>Jenis Kelamin: <span id="detailPatientGender"></span></p>
+            <p>Keterangan: <span id="detailPatientNotes"></span></p>
+          </div>
+          <div class="column">
+            <h4>Reservasi</h4>
+            <p>Supir: <span id="detailDriverName"></span></p>
+            <p>Kendaraan: <span id="detailAmbulancePlate"></span></p>
+            <p>Status: <span id="detailStatusText"></span></p>
+            <p>Timestamp: <span id="detailTimestamp"></span></p>
+          </div>
+        </div>
+        <div class="status-control">
+          <label for="status">Ganti Status</label>
+          <select id="status">
+            <option value="pending">Pending</option>
+            <option value="accepted">Diterima</option>
+            <option value="picking_up">Menuju Lokasi</option>
+            <option value="picked_up">Pasien Dijemput</option>
+            <option value="arrived">Tiba di Tujuan</option>
+            <option value="completed">Selesai</option>
+            <option value="cancelled">Dibatalkan</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="logoutModal" class="hidden">
+      <div id="logoutModalContent">
+        <h2 class="modal-title">Apakah Anda yakin ingin keluar?</h2>
+        <div class="modal-actions">
+          <button id="cancelLogout" class="btn-outline">Batal</button>
+          <button id="confirmLogout" class="btn-primary">Keluar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div id="snackbar" class="snackbar">
+      <span id="snackbarMessage"></span>
+    </div>
+
+    <script src="/public/js/utils.js"></script>
+    <script src="/public/js/logoutModal.js"></script>
+    <script src="/public/js/navActive.js"></script>
+    <script src="/public/js/reservations.js"></script>
+    <script src="/src/admin/js/script.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setupLogoutModal("login_screen.html");
+        loadReservations("login_screen.html");
+
+        document.getElementById("reservationTableBody").addEventListener("click", function (event) {
+          if (event.target.classList.contains("link-detail")) {
+            const reservationId = event.target.dataset.id;
+            showReservationDetailPopup(reservationId, "login_screen.html");
+            console.log("Tombol Lihat diklik untuk Reservasi ID:", reservationId);
+          }
+        });
+
+        document.getElementById("closePopupBtn").addEventListener("click", function () {
+          const popupOverlay = document.getElementById("popupOverlay");
+          popupOverlay.classList.remove("show");
+          popupOverlay.classList.add("hidden");
+        });
+        document.getElementById("popupOverlay").addEventListener("click", function (event) {
+          if (event.target === this) {
+            const popupOverlay = document.getElementById("popupOverlay");
+            popupOverlay.classList.remove("show");
+            this.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
