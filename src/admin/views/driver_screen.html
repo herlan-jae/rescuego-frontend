@@ -6,9 +6,6 @@
     <title>Supir - RescueGo</title>
     <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
 
-    <script src="/public/js/utils.js"></script>
-    <script src="/public/js/auth.js"></script>
-
     <link rel="stylesheet" href="/public/css/global.css" />
     <link rel="stylesheet" href="/src/admin/css/style.css" />
   </head>
@@ -72,12 +69,7 @@
               </thead>
               <tbody id="driverTableBody">
                 <tr>
-                  <td>1</td>
-                  <td>Abdul Hasan</td>
-                  <td>00-00-001</td>
-                  <td class="status-cell">Aktif</td>
-                  <td>Jakarta Pusat</td>
-                  <td><span class="link-detail">Lihat</span></td>
+                  <td colspan="6" class="text-center py-4">Memuat data supir...</td>
                 </tr>
               </tbody>
             </table>
@@ -86,7 +78,7 @@
       </main>
     </div>
 
-    <div class="popup-overlay" id="addDriverOverlay">
+    <div class="popup-overlay hidden" id="addDriverOverlay">
       <div class="popup add-driver-popup">
         <h3 class="popup-title">Tambah Driver Baru</h3>
         <form id="addDriverForm" class="driver-form">
@@ -100,8 +92,12 @@
               <input type="email" name="email" required />
             </div>
             <div class="form-group">
-              <label>Nama Lengkap</label>
-              <input type="text" name="fullname" required />
+              <label>Nama Depan</label>
+              <input type="text" name="first_name" required />
+            </div>
+            <div class="form-group">
+              <label>Nama Belakang</label>
+              <input type="text" name="last_name" required />
             </div>
             <div class="form-group">
               <label>Password</label>
@@ -109,26 +105,40 @@
             </div>
             <div class="form-group">
               <label>Nomor Telepon</label>
-              <input type="tel" name="phone" />
+              <input type="tel" name="phone_number" required />
             </div>
             <div class="form-group">
               <label>Nomor SIM</label>
-              <input type="text" name="sim" required />
+              <input type="text" name="driver_license_number" required />
+            </div>
+            <div class="form-group">
+              <label>Alamat</label>
+              <input type="text" name="address" required />
             </div>
             <div class="form-group">
               <label>Tanggal Lahir</label>
-              <input type="date" name="birthdate" />
+              <input type="date" name="date_of_birth" required />
             </div>
             <div class="form-group">
               <label>Kota</label>
               <input type="text" name="city" />
             </div>
+            <div class="form-group">
+              <label>Nama Kontak Darurat</label>
+              <input type="text" name="emergency_contact_name" required />
+            </div>
+            <div class="form-group">
+              <label>Nomor Telepon Kontak Darurat</label>
+              <input type="tel" name="emergency_contact_phone" required />
+            </div>
           </div>
           <div class="form-group center">
             <label>Status</label>
             <select name="status">
-              <option value="aktif">Aktif</option>
-              <option value="nonaktif">Nonaktif</option>
+              <option value="available">Available</option>
+              <option value="busy">Busy</option>
+              <option value="on_duty">On Duty</option>
+              <option value="off_duty">Off Duty</option>
             </select>
           </div>
           <div class="form-actions">
@@ -138,28 +148,32 @@
         </form>
       </div>
     </div>
-    <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-overlay hidden" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
-        <h3>Detail Supir</h3>
+        <h3 class="popup-title">Detail Supir</h3>
         <div class="popup-content">
           <div class="column">
             <h4>Profil</h4>
-            <p>Nama: Abdul Hasan</p>
-            <p>Email: hasanabdul@gmail.com</p>
-            <p>Nomor Telepon: 08123456789</p>
-            <p>Tanggal Lahir: 19-09-1980</p>
+            <p>Nama: <span id="detailDriverName"></span></p>
+            <p>Email: <span id="detailDriverEmail"></span></p>
+            <p>Nomor Telepon: <span id="detailDriverPhone"></span></p>
+            <p>Tanggal Lahir: <span id="detailDriverBirthdate"></span></p>
           </div>
           <div class="column">
             <h4>Profesional</h4>
-            <p>Nomor SIM: 00-00-001</p>
-            <p>Status: <span id="statusText">Aktif</span></p>
-            <p>Kota: Jakarta Pusat</p>
+            <p>Nomor SIM: <span id="detailDriverSIM"></span></p>
+            <p>Status: <span id="detailDriverStatus"></span></p>
+            <p>Kota: <span id="detailDriverCity"></span></p>
+            <p>Tanggal Masuk: <span id="detailDriverHireDate"></span></p>
           </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" id="editDriverBtn">Edit</button>
+          <button type="button" class="btn-primary" id="deleteDriverBtn" style="background-color: var(--accent-color)">Hapus</button>
         </div>
       </div>
     </div>
-
     <div id="logoutModal" class="hidden">
       <div id="logoutModalContent">
         <h2 class="modal-title">Apakah Anda yakin ingin keluar?</h2>
@@ -172,17 +186,47 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div id="snackbar" class="snackbar">
+    <div id="snackbar" class="snackbar hidden">
       <span id="snackbarMessage"></span>
     </div>
 
+    <script src="/public/js/utils.js"></script>
     <script src="/public/js/logoutModal.js"></script>
-    <script>
-      setupLogoutModal("login_screen.html");
-    </script>
     <script src="/public/js/navActive.js"></script>
+    <script src="/public/js/drivers.js"></script>
     <script src="/src/admin/js/script.js"></script>
-    <script src="/src/admin/js/add-driver.js"></script>
     <script src="/src/admin/js/addDrivers.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setupLogoutModal("login_screen.html");
+        loadDrivers("login_screen.html");
+
+        // Event listener untuk tombol 'Lihat' (untuk menampilkan detail driver)
+        document.getElementById("driverTableBody").addEventListener("click", function (event) {
+          if (event.target.classList.contains("link-detail")) {
+            const driverId = event.target.dataset.id;
+            showDriverDetailPopup(driverId, "login_screen.html"); // Panggil fungsi ini
+            console.log("Tombol Lihat diklik untuk Driver ID:", driverId);
+          }
+        });
+
+        // Event listener untuk menutup popup detail supir
+        const closeDriverDetailPopupBtn = document.getElementById("closePopupBtn");
+        const driverDetailPopupOverlay = document.getElementById("popupOverlay"); // Menggunakan ID yang sama dengan reservasi
+        if (closeDriverDetailPopupBtn && driverDetailPopupOverlay) {
+          closeDriverDetailPopupBtn.addEventListener("click", function () {
+            driverDetailPopupOverlay.classList.remove("show");
+            driverDetailPopupOverlay.classList.add("hidden");
+          });
+          driverDetailPopupOverlay.addEventListener("click", function (event) {
+            if (event.target === this) {
+              driverDetailPopupOverlay.classList.remove("show");
+              driverDetailPopupOverlay.classList.add("hidden");
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

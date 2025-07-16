@@ -1,86 +1,45 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // === Login Toggle Password ===
-    const passwordInput = document.getElementById("password");
-    const toggleIcon = document.getElementById("togglePassword");
+// src/admin/js/script.js
 
-    if (passwordInput && toggleIcon) {
-        toggleIcon.addEventListener("click", () => {
-            const isVisible = passwordInput.type === "text";
-            passwordInput.type = isVisible ? "password" : "text";
-            toggleIcon.src = isVisible
-                ? "assets/images/eye.svg"
-                : "assets/images/eye-off.svg";
-        });
-    }
+document.addEventListener("DOMContentLoaded", function () {
+  const burgerMenu = document.getElementById("burgerMenu");
+  const sidebar = document.querySelector(".sidebar-white");
+  const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-    // === Reservation Popup ===
-    const popupOverlay = document.getElementById("popupOverlay");
-    const closeBtn = document.getElementById("closePopupBtn");
-    const lihatLinks = document.querySelectorAll(".link-detail");
-    const statusSelect = document.getElementById("status");
-    const statusText = document.getElementById("statusText");
+  // PASTIKAN SIDEBAR OVERLAY TERSEMBUNYI SAAT START
+  if (sidebarOverlay) {
+    sidebarOverlay.classList.add("hidden"); // Tambahkan hidden class saat init
+    sidebarOverlay.classList.remove("active"); // Pastikan active dihapus
+  } else {
+    console.warn("Sidebar overlay with ID 'sidebarOverlay' not found in script.js (init).");
+  }
 
-    let currentStatusCell = null;
-
-    lihatLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
-            popupOverlay.style.display = "flex";
-
-            const row = e.target.closest("tr");
-            currentStatusCell = row.querySelector(".status-cell");
-
-            if (currentStatusCell) {
-                const currentStatus = currentStatusCell.textContent.trim();
-                statusSelect.value = currentStatus;
-                statusText.textContent = currentStatus;
-            }
-        });
-    });
-
-    closeBtn.addEventListener("click", () => {
-        popupOverlay.style.display = "none";
-    });
-
-    window.addEventListener("click", (e) => {
-        if (e.target === popupOverlay) {
-            popupOverlay.style.display = "none";
+  if (burgerMenu) {
+    burgerMenu.addEventListener("click", function () {
+      if (sidebar) {
+        sidebar.classList.toggle("active");
+      }
+      if (sidebarOverlay) {
+        sidebarOverlay.classList.toggle("active");
+        // Tambahan: Pastikan hidden/show juga dikelola saat toggle
+        if (sidebar.classList.contains("active")) {
+          sidebarOverlay.classList.remove("hidden");
+        } else {
+          sidebarOverlay.classList.add("hidden");
         }
+      }
     });
+  } else {
+    console.warn("Burger menu button with ID 'burgerMenu' not found in script.js.");
+  }
 
-    if (statusSelect && statusText) {
-        statusSelect.addEventListener("change", () => {
-            const newStatus = statusSelect.value;
-            statusText.textContent = newStatus;
-
-            if (currentStatusCell) {
-                currentStatusCell.textContent = newStatus;
-            }
-        });
-    }
-});
-
-// === Hamburger ===
-document.addEventListener("DOMContentLoaded", () => {
-    const burger = document.getElementById("burgerMenu");
-    const sidebar = document.querySelector(".sidebar-white");
-    const overlay = document.getElementById("sidebarOverlay");
-
-    if (burger && sidebar && overlay) {
-        burger.addEventListener("click", () => {
-            sidebar.classList.toggle("active");
-            overlay.classList.toggle("active");
-        });
-
-        overlay.addEventListener("click", () => {
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-        });
-    }
-});
-
-document.getElementById("logoutBtn").addEventListener("click", function () {
-    document.getElementById("logoutModal").classList.add("show");
-
-    document.querySelector(".sidebar-white")?.classList.remove("active");
-    document.getElementById("sidebarOverlay")?.classList.remove("active");
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", function () {
+      if (sidebar) {
+        sidebar.classList.remove("active");
+      }
+      sidebarOverlay.classList.add("hidden"); // Pastikan hidden ditambahkan saat klik overlay
+    });
+  } else {
+    console.warn("Sidebar overlay with ID 'sidebarOverlay' not found in script.js (click).");
+  }
 });
