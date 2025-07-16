@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - RescueGo</title>
-    <link rel="icon" href="assets/img/RescueGo-SideBarLogo.svg" />
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
@@ -17,10 +17,10 @@
     <!-- Navbar -->
     <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
-        <img src="assets/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
         <span class="font-bold text-lg">RescueGo</span>
       </div>
-      <img src="assets/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
+      <img src="public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
     </header>
 
     <!-- Main Content -->
@@ -62,25 +62,25 @@
 
     <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-inner px-6 py-3 flex justify-center items-center border-t gap-x-12 md:gap-x-24 lg:gap-x-36">
-      <a href="dashboard.html" class="flex flex-col items-center text-[#5B2EFF] active-nav">
+      <a href="/src/driver/views/dashboard_screen.html" class="flex flex-col items-center text-[#5B2EFF] active-nav">
         <div class="bg-[#EFE8FF] p-2 rounded-full">
-          <img src="assets/img/Home-Button-Active.svg" alt="Beranda" class="h-6 w-6" />
+          <img src="public/img/Home-Button-Active.svg" alt="Beranda" class="h-6 w-6" />
         </div>
         <span class="text-xs mt-1 font-semibold">Beranda</span>
       </a>
 
-      <a href="request_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Request-Button.svg" alt="Request" class="h-6 w-6" />
+      <a href="/src/driver/views/request_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
+        <img src="public/img/Request-Button.svg" alt="Request" class="h-6 w-6" />
         <span class="text-xs mt-1">Request</span>
       </a>
 
-      <a href="vehicle_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
+      <a href="/src/driver/views/vehicle_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
+        <img src="public/img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
         <span class="text-xs mt-1">Kendaraan</span>
       </a>
 
-      <a href="profile_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" />
+      <a href="/src/driver/views/profile_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
+        <img src="public/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" />
         <span class="text-xs mt-1">Profil</span>
       </a>
     </nav>
@@ -126,7 +126,6 @@
       </div>
     </div>
 
-    <!-- Script -->
-    <script src="js/request-detail-modal.js"></script>
+    <script src="/src/driver/js/request-detail-modal.js"></script>
   </body>
 </html>

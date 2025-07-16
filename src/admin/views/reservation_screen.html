@@ -79,21 +79,21 @@
     <div class="popup-overlay hidden" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
-        <h3>Detail</h3>
-        <div class="popup-content">
+        <h3>Detail Reservasi</h3>
+        <div class="popup-content" id="popupContent">
           <div class="column">
             <h4>Pasien</h4>
-            <p>Nama: <span id="detailPatientName"></span></p>
-            <p>Umur: <span id="detailPatientAge"></span></p>
-            <p>Jenis Kelamin: <span id="detailPatientGender"></span></p>
-            <p>Keterangan: <span id="detailPatientNotes"></span></p>
+            <p>Nama: <span id="detailPatientName">Memuat...</span></p>
+            <p>Umur: <span id="detailPatientAge">Memuat...</span></p>
+            <p>Jenis Kelamin: <span id="detailPatientGender">Memuat...</span></p>
+            <p>Keterangan: <span id="detailPatientNotes">Memuat...</span></p>
           </div>
           <div class="column">
             <h4>Reservasi</h4>
-            <p>Supir: <span id="detailDriverName"></span></p>
-            <p>Kendaraan: <span id="detailAmbulancePlate"></span></p>
-            <p>Status: <span id="detailStatusText"></span></p>
-            <p>Timestamp: <span id="detailTimestamp"></span></p>
+            <p>Supir: <span id="detailDriverName">Memuat...</span></p>
+            <p>Kendaraan: <span id="detailAmbulancePlate">Memuat...</span></p>
+            <p>Status: <span id="detailStatusText">Memuat...</span></p>
+            <p>Timestamp: <span id="detailTimestamp">Memuat...</span></p>
           </div>
         </div>
         <div class="status-control">
@@ -108,6 +108,35 @@
             <option value="cancelled">Dibatalkan</option>
           </select>
         </div>
+        <div class="form-actions" style="justify-content: flex-end; margin-top: 20px">
+          <button type="button" class="btn-primary" id="assignReservationBtn">Tugaskan Supir & Ambulans</button>
+          <button type="button" class="btn-primary" id="cancelReservationBtn" style="background-color: var(--accent-color)">Batalkan Reservasi</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-overlay hidden" id="assignReservationOverlay">
+      <div class="popup add-driver-popup">
+        <span class="close-btn" id="closeAssignPopupBtn">&times;</span>
+        <h3 class="popup-title">Tugaskan Reservasi</h3>
+        <form id="assignReservationForm">
+          <div class="form-group">
+            <label for="assignDriverSelect">Pilih Supir:</label>
+            <select id="assignDriverSelect" name="driver_id" class="w-full p-2 border rounded">
+              <option value="">-- Memuat Supir --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="assignAmbulanceSelect">Pilih Ambulans:</label>
+            <select id="assignAmbulanceSelect" name="ambulance_id" class="w-full p-2 border rounded">
+              <option value="">-- Memuat Ambulans --</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-outline" id="cancelAssignBtn">Batal</button>
+            <button type="submit" class="btn-primary">Tugaskan</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -123,39 +152,94 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div id="snackbar" class="snackbar">
+    <div id="snackbar" class="snackbar hidden">
       <span id="snackbarMessage"></span>
     </div>
 
     <script src="/public/js/utils.js"></script>
     <script src="/public/js/logoutModal.js"></script>
+    <script>
+      setupLogoutModal("login_screen.html");
+    </script>
     <script src="/public/js/navActive.js"></script>
     <script src="/public/js/reservations.js"></script>
     <script src="/src/admin/js/script.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        setupLogoutModal("login_screen.html");
-        loadReservations("login_screen.html");
+        const LOGIN_URL = "login_screen.html";
+        let currentReservationId = null;
+        setupLogoutModal(LOGIN_URL);
+        loadReservations(LOGIN_URL);
 
         document.getElementById("reservationTableBody").addEventListener("click", function (event) {
           if (event.target.classList.contains("link-detail")) {
             const reservationId = event.target.dataset.id;
-            showReservationDetailPopup(reservationId, "login_screen.html");
-            console.log("Tombol Lihat diklik untuk Reservasi ID:", reservationId);
+            currentReservationId = reservationId;
+            showReservationDetailPopup(reservationId, LOGIN_URL);
           }
         });
 
-        document.getElementById("closePopupBtn").addEventListener("click", function () {
-          const popupOverlay = document.getElementById("popupOverlay");
+        const popupOverlay = document.getElementById("popupOverlay");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+
+        function closeDetailPopup() {
           popupOverlay.classList.remove("show");
           popupOverlay.classList.add("hidden");
-        });
-        document.getElementById("popupOverlay").addEventListener("click", function (event) {
+          document.body.classList.remove("no-scroll");
+          currentReservationId = null;
+        }
+
+        closePopupBtn.addEventListener("click", closeDetailPopup);
+        popupOverlay.addEventListener("click", function (event) {
           if (event.target === this) {
-            const popupOverlay = document.getElementById("popupOverlay");
-            popupOverlay.classList.remove("show");
-            this.classList.add("hidden");
+            closeDetailPopup();
+          }
+        });
+
+        document.getElementById("status").addEventListener("change", function () {
+          if (currentReservationId) {
+            updateReservationStatus(currentReservationId, this.value, LOGIN_URL);
+          } else {
+            showSnackbar("ID reservasi tidak ditemukan untuk update status.", "error");
+          }
+        });
+
+        document.getElementById("assignReservationBtn").addEventListener("click", function () {
+          if (currentReservationId) {
+            showAssignReservationPopup(currentReservationId, LOGIN_URL);
+          } else {
+            showSnackbar("Tidak ada reservasi yang dipilih untuk ditugaskan.", "error");
+          }
+        });
+
+        document.getElementById("cancelReservationBtn").addEventListener("click", function () {
+          if (currentReservationId) {
+            if (typeof cancelReservation === "function") {
+              cancelReservation(currentReservationId, LOGIN_URL);
+            } else {
+              console.error("Fungsi cancelReservation tidak terdefinisi.");
+            }
+          } else {
+            showSnackbar("Tidak ada reservasi yang dipilih untuk dibatalkan.", "error");
+          }
+        });
+
+        const assignReservationOverlay = document.getElementById("assignReservationOverlay");
+        const closeAssignPopupBtn = document.getElementById("closeAssignPopupBtn");
+        const cancelAssignBtn = document.getElementById("cancelAssignBtn");
+
+        function closeAssignPopup() {
+          assignReservationOverlay.classList.remove("show");
+          assignReservationOverlay.classList.add("hidden");
+          document.body.classList.remove("no-scroll");
+        }
+
+        closeAssignPopupBtn.addEventListener("click", closeAssignPopup);
+        cancelAssignBtn.addEventListener("click", closeAssignPopup);
+        assignReservationOverlay.addEventListener("click", function (event) {
+          if (event.target === this) {
+            closeAssignPopup();
           }
         });
       });
