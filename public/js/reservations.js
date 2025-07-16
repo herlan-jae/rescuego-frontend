@@ -88,9 +88,8 @@ async function showReservationDetailPopup(reservationId, redirectUrl) {
   const detailAmbulancePlate = document.getElementById("detailAmbulancePlate");
   const detailStatusText = document.getElementById("detailStatusText");
   const detailTimestamp = document.getElementById("detailTimestamp");
-  const detailStatusSelect = document.getElementById("status"); // Select box untuk status
+  const detailStatusSelect = document.getElementById("status");
 
-  // Debug logs dari instruksi sebelumnya (biarkan saja, ini sangat membantu)
   console.log("DEBUG: Memulai showReservationDetailPopup untuk ID:", reservationId);
   const potentialStatusSelect = document.getElementById("status");
   console.log("DEBUG: Hasil document.getElementById('status'):", potentialStatusSelect);
@@ -99,12 +98,11 @@ async function showReservationDetailPopup(reservationId, redirectUrl) {
   if (!reservationId || reservationId === "null" || reservationId === "undefined" || reservationId === "") {
     console.error("Invalid reservationId provided for detail popup:", reservationId);
     showSnackbar("Tidak dapat memuat detail: ID reservasi tidak valid.", "error");
-    popupOverlay.classList.remove("show"); // Sembunyikan visual
-    popupOverlay.classList.add("hidden"); // Sembunyikan display
+    popupOverlay.classList.remove("show");
+    popupOverlay.classList.add("hidden");
     return;
   }
 
-  // Kosongkan detail sebelumnya dan tampilkan loading
   detailPatientName.textContent = "Memuat...";
   detailPatientAge.textContent = "Memuat...";
   detailPatientGender.textContent = "Memuat...";
@@ -114,18 +112,14 @@ async function showReservationDetailPopup(reservationId, redirectUrl) {
   detailStatusText.textContent = "Memuat...";
   detailTimestamp.textContent = "Memuat...";
 
-  // --- PERBAIKAN KRITIS: Pastikan detailStatusSelect ditemukan sebelum diakses ---
   if (detailStatusSelect) {
-    detailStatusSelect.value = "pending"; // Default awal, gunakan nilai machine-readable
+    detailStatusSelect.value = "pending";
   } else {
     console.error("ERROR KRITIS: Elemen SELECT dengan ID 'status' TIDAK DITEMUKAN PADA SAAT INI. Popup mungkin tidak berfungsi penuh.");
-    //showSnackbar("Gagal menampilkan detail: Komponen status tidak ditemukan.", "error"); // Opsional: tampilkan snackbar kritis
-    // Tidak perlu return, biarkan bagian lain tetap terisi jika mungkin
   }
-  // --- AKHIR PERBAIKAN KRITIS ---
 
-  popupOverlay.classList.remove("hidden"); // Menghapus display:none
-  popupOverlay.classList.add("show"); // Menambahkan opacity:1 dan pointer-events:auto
+  popupOverlay.classList.remove("hidden");
+  popupOverlay.classList.add("show");
 
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) {
@@ -151,26 +145,21 @@ async function showReservationDetailPopup(reservationId, redirectUrl) {
       console.log("Reservation detail fetched successfully:", detailData);
       showSnackbar("Detail reservasi berhasil dimuat!", "success");
 
-      // --- ISI ELEMEN-ELEMEN POP-UP DENGAN DATA DARI JSON ---
       detailPatientName.textContent = detailData.patient_name || "N/A";
       detailPatientAge.textContent = detailData.patient_age || "N/A";
       detailPatientGender.textContent = detailData.patient_gender || "N/A";
       detailPatientNotes.textContent = detailData.patient_condition || detailData.current_symptoms || "N/A";
 
-      // Handle nested driver details dengan optional chaining
       detailDriverName.textContent = detailData.assigned_driver_details?.name || "Belum Ditugaskan";
 
-      // Handle nested ambulance details dengan optional chaining
       detailAmbulancePlate.textContent = detailData.assigned_ambulance_details?.license_plate || "Belum Ditugaskan";
 
       detailStatusText.textContent = detailData.status_display || "N/A";
 
       detailTimestamp.textContent = detailData.requested_at ? new Date(detailData.requested_at).toLocaleString() : "N/A";
 
-      // Atur nilai select box sesuai status dari API (gunakan status yang machine-readable)
       if (detailStatusSelect) {
-        // Pastikan detailStatusSelect ditemukan
-        detailStatusSelect.value = detailData.status || "pending"; // Default 'pending'
+        detailStatusSelect.value = detailData.status || "pending";
       }
     } else if (response.status === 401) {
       console.error("Unauthorized: Token invalid or expired for detail. Redirecting.");

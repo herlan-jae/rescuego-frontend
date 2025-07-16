@@ -1,8 +1,3 @@
-// public/js/auth.js
-
-// Pastikan API_BASE_URL mengarah ke domain/port backend Django Anda
-// Jika Django Anda berjalan di port 8000 dan endpoint loginnya adalah /accounts/api/login/
-// Fungsi untuk mengelola tampilan password (tetap sama)
 function togglePassword(eyeIconId, passwordInputId, eyeOnSrc, eyeOffSrc) {
   const passwordInput = document.getElementById(passwordInputId);
   const eyeIcon = document.getElementById(eyeIconId);
@@ -40,7 +35,7 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
     if (!email || !password) {
       errorMsg.classList.remove("hidden");
       errorMsg.textContent = "Email and password are required.";
-      showSnackbar("Email and password are required!", "error"); // Panggil dari utils.js
+      showSnackbar("Email and password are required!", "error");
       return;
     }
 
@@ -68,7 +63,7 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
             localStorage.setItem("refreshToken", data.tokens.refresh);
           }
           console.log("Login successful! Access Token:", accessToken);
-          showSnackbar("Login berhasil!", "success"); // Panggil dari utils.js
+          showSnackbar("Login berhasil!", "success");
 
           setTimeout(() => {
             window.location.href = redirectUrl;
@@ -77,7 +72,7 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
           const msg = "Login successful, but no access token received (unexpected API response).";
           errorMsg.classList.remove("hidden");
           errorMsg.textContent = msg;
-          showSnackbar(msg, "error"); // Panggil dari utils.js
+          showSnackbar(msg, "error");
           console.error("Login successful, but no access token received:", data);
         }
       } else {
@@ -90,14 +85,14 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
 
         errorMsg.classList.remove("hidden");
         errorMsg.textContent = errorMessage;
-        showSnackbar(errorMessage, "error"); // Panggil dari utils.js
+        showSnackbar(errorMessage, "error");
         console.error("Login failed:", response.status, data);
       }
     } catch (error) {
       const msg = `Network error or server unavailable: ${error.message}`;
       errorMsg.classList.remove("hidden");
       errorMsg.textContent = msg;
-      showSnackbar(msg, "error"); // Panggil dari utils.js
+      showSnackbar(msg, "error");
       console.error("Network or server error during login:", error);
     } finally {
       buttonText.classList.remove("hidden");

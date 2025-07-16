@@ -1,57 +1,41 @@
-// src/admin/js/addAmbulances.js
-
-// Asumsi API_BASE_URL tersedia dari public/js/utils.js
-// Asumsi showSnackbar tersedia dari public/js/utils.js
-// Asumsi loadAmbulances tersedia dari public/js/ambulances.js (untuk reload tabel setelah tambah)
-
 document.addEventListener("DOMContentLoaded", function () {
   const showAddAmbulanceBtn = document.getElementById("showAddAmbulanceForm");
   const addAmbulanceOverlay = document.getElementById("addAmbulanceOverlay");
   const addAmbulanceForm = document.getElementById("addAmbulanceForm");
   const cancelAddAmbulanceBtn = document.getElementById("cancelAddAmbulance");
-  // const ambulanceTableBody = document.getElementById("ambulanceTableBody"); // Tidak diperlukan di sini lagi, loadAmbulances akan menanganinya
 
-  // PERBAIKAN: Tambahkan null check di awal agar tidak ada error jika elemen tidak ditemukan
   if (!showAddAmbulanceBtn || !addAmbulanceOverlay || !addAmbulanceForm || !cancelAddAmbulanceBtn) {
     console.error("One or more elements for 'Add Ambulance' popup are missing. Check IDs in ambulance_screen.html.");
-    return; // Hentikan eksekusi jika ada elemen yang tidak ditemukan
+    return;
   }
 
-  // Fungsi untuk menampilkan pop-up
   function showAddAmbulancePopup() {
-    addAmbulanceOverlay.classList.remove("hidden"); // Hapus display:none
-    addAmbulanceOverlay.classList.add("show"); // Tambahkan opacity:1
-    addAmbulanceForm.reset(); // Kosongkan form setiap kali dibuka
-    document.body.classList.add("no-scroll"); // Cegah scrolling body
+    addAmbulanceOverlay.classList.remove("hidden");
+    addAmbulanceOverlay.classList.add("show");
+    addAmbulanceForm.reset();
+    document.body.classList.add("no-scroll");
   }
 
-  // Fungsi untuk menyembunyikan pop-up
   function hideAddAmbulancePopup() {
-    addAmbulanceOverlay.classList.remove("show"); // Hapus opacity:1
-    addAmbulanceOverlay.classList.add("hidden"); // Tambahkan display:none
-    addAmbulanceForm.reset(); // Reset form saat ditutup
-    document.body.classList.remove("no-scroll"); // Aktifkan scrolling kembali
+    addAmbulanceOverlay.classList.remove("show");
+    addAmbulanceOverlay.classList.add("hidden");
+    addAmbulanceForm.reset();
+    document.body.classList.remove("no-scroll");
   }
 
-  // Event Listener untuk tombol "+ Tambah"
   if (showAddAmbulanceBtn) {
-    // Periksa lagi untuk memastikan
     showAddAmbulanceBtn.addEventListener("click", function () {
       showAddAmbulancePopup();
     });
   }
 
-  // Event Listener untuk tombol "Batal" di dalam pop-up
   if (cancelAddAmbulanceBtn) {
-    // Periksa lagi untuk memastikan
     cancelAddAmbulanceBtn.addEventListener("click", function () {
       hideAddAmbulancePopup();
     });
   }
 
-  // Event Listener untuk klik di luar area pop-up (pada overlay)
   if (addAmbulanceOverlay) {
-    // Periksa lagi untuk memastikan
     addAmbulanceOverlay.addEventListener("click", function (e) {
       if (e.target === addAmbulanceOverlay) {
         hideAddAmbulancePopup();
@@ -59,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Event Listener untuk SUBMIT FORM (MODIFIKASI INI)
   if (addAmbulanceForm) {
     addAmbulanceForm.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -69,16 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        /* ... handle unauthorized ... */ return;
+        return;
       }
 
       let method = "POST";
-      let url = `${API_BASE_URL}/ambulances/api/`; // URL default untuk POST
+      let url = `${API_BASE_URL}/ambulances/api/`;
 
       if (currentAmbulanceId) {
-        // Jika ada ID, berarti ini operasi EDIT
-        method = "PATCH"; // Atau 'PUT' jika API Anda mengharapkan PUT
-        url = `${API_BASE_URL}/ambulances/api/${currentAmbulanceId}/`; // URL untuk PATCH/PUT
+        method = "PATCH";
+        url = `${API_BASE_URL}/ambulances/api/${currentAmbulanceId}/`;
         showSnackbar("Mengupdate ambulans...", "info");
       } else {
         showSnackbar("Menambahkan ambulans...", "info");
@@ -99,9 +81,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.ok) {
           console.log("Operasi ambulans berhasil:", data);
           showSnackbar(`Ambulans berhasil di${currentAmbulanceId ? "update" : "tambahkan"}!`, "success");
-          hideAddAmbulancePopup(); // Sembunyikan pop-up setelah sukses
-          loadAmbulances("login_screen.html"); // Muat ulang daftar ambulans
-          currentAmbulanceId = null; // Reset ID setelah operasi selesai
+          hideAddAmbulancePopup();
+          loadAmbulances("login_screen.html");
+          currentAmbulanceId = null;
         } else {
           let errorMessage = `Gagal ${currentAmbulanceId ? "mengupdate" : "menambahkan"} ambulans. Silakan coba lagi.`;
           if (data && data.detail) {

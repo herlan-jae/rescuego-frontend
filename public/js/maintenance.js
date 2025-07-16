@@ -1,9 +1,5 @@
-/**
- * Mengambil daftar perbaikan dari API dan menampilkannya di tabel.
- * @param {string} redirectUrl - URL untuk redirect jika terjadi masalah otentikasi.
- */
 async function loadMaintenance(redirectUrl) {
-  const maintenanceTableBody = document.getElementById("maintenanceTableBody"); // ID baru untuk tbody
+  const maintenanceTableBody = document.getElementById("maintenanceTableBody");
   if (!maintenanceTableBody) {
     console.error("Elemen #maintenanceTableBody tidak ditemukan.");
     return;
@@ -23,7 +19,6 @@ async function loadMaintenance(redirectUrl) {
 
   try {
     const response = await fetch(`${API_BASE_URL}/maintenance/api/`, {
-      // Endpoint GET List Maintenance
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +27,7 @@ async function loadMaintenance(redirectUrl) {
     });
 
     if (response.ok) {
-      const maintenanceData = await response.json(); // Data paginasi DRF
+      const maintenanceData = await response.json();
       console.log("Maintenance data fetched successfully:", maintenanceData);
       showSnackbar("Data perbaikan berhasil dimuat!", "success");
 
@@ -45,8 +40,6 @@ async function loadMaintenance(redirectUrl) {
 
       maintenanceData.results.forEach((record) => {
         const recordIdForData = record.id ? String(record.id) : "";
-
-        // Pastikan properti JSON sesuai dengan yang dikembalikan API Anda
         const row = `
                     <tr>
                         <td>${record.id || "N/A"}</td>
@@ -80,6 +73,3 @@ async function loadMaintenance(redirectUrl) {
     maintenanceTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-500">Kesalahan koneksi: ${error.message}</td></tr>`;
   }
 }
-
-// showMaintenanceDetailPopup akan dibuat nanti
-// async function showMaintenanceDetailPopup(recordId, redirectUrl) { /* ... */ }

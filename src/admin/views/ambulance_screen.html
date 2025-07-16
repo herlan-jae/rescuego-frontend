@@ -196,21 +196,19 @@
           }
         });
 
-        // Event listener untuk menutup popup detail ambulans
         const closePopupBtn = document.getElementById("closePopupBtn");
         const ambulanceDetailPopupOverlay = document.getElementById("popupOverlay");
         if (closePopupBtn && ambulanceDetailPopupOverlay) {
           closePopupBtn.addEventListener("click", function () {
-            hideAmbulanceDetailPopup(); // Panggil fungsi yang benar
+            hideAmbulanceDetailPopup();
           });
           ambulanceDetailPopupOverlay.addEventListener("click", function (event) {
             if (event.target === this) {
-              hideAmbulanceDetailPopup(); // Panggil fungsi yang benar
+              hideAmbulanceDetailPopup();
             }
           });
         }
 
-        // Event listener untuk tombol Hapus
         const deleteAmbulanceBtn = document.getElementById("deleteAmbulanceBtn");
         if (deleteAmbulanceBtn) {
           deleteAmbulanceBtn.addEventListener("click", function () {

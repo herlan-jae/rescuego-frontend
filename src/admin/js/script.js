@@ -1,14 +1,11 @@
-// src/admin/js/script.js
-
 document.addEventListener("DOMContentLoaded", function () {
   const burgerMenu = document.getElementById("burgerMenu");
   const sidebar = document.querySelector(".sidebar-white");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-  // PASTIKAN SIDEBAR OVERLAY TERSEMBUNYI SAAT START
   if (sidebarOverlay) {
-    sidebarOverlay.classList.add("hidden"); // Tambahkan hidden class saat init
-    sidebarOverlay.classList.remove("active"); // Pastikan active dihapus
+    sidebarOverlay.classList.add("hidden");
+    sidebarOverlay.classList.remove("active");
   } else {
     console.warn("Sidebar overlay with ID 'sidebarOverlay' not found in script.js (init).");
   }
@@ -20,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       if (sidebarOverlay) {
         sidebarOverlay.classList.toggle("active");
-        // Tambahan: Pastikan hidden/show juga dikelola saat toggle
         if (sidebar.classList.contains("active")) {
           sidebarOverlay.classList.remove("hidden");
         } else {
@@ -37,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (sidebar) {
         sidebar.classList.remove("active");
       }
-      sidebarOverlay.classList.add("hidden"); // Pastikan hidden ditambahkan saat klik overlay
+      sidebarOverlay.classList.add("hidden");
     });
   } else {
     console.warn("Sidebar overlay with ID 'sidebarOverlay' not found in script.js (click).");

@@ -11,13 +11,11 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Font import */
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
       body {
         font-family: "Inter", sans-serif;
       }
 
-      /* Pastikan hidden class didefinisikan jika menggunakan JS */
       .hidden {
         display: none !important;
       }
@@ -69,7 +67,6 @@
 
     <script src="/public/js/auth.js"></script>
     <script>
-      // Panggil fungsi handleLoginFormSubmit global saat DOM siap
       document.addEventListener("DOMContentLoaded", function () {
         handleLoginFormSubmit("loginForm", "email", "password", "errorMsg", "dashboard_screen.html");
       });

@@ -1,12 +1,3 @@
-// public/js/drivers.js
-
-// Asumsi API_BASE_URL sudah tersedia dari public/js/utils.js
-// Asumsi showSnackbar sudah tersedia dari public/js/utils.js
-
-/**
- * Mengambil daftar driver dari API dan menampilkannya di tabel.
- * @param {string} redirectUrl - URL untuk redirect jika terjadi masalah otentikasi.
- */
 async function loadDrivers(redirectUrl) {
   const driverTableBody = document.getElementById("driverTableBody");
   if (!driverTableBody) {
@@ -28,7 +19,6 @@ async function loadDrivers(redirectUrl) {
 
   try {
     const response = await fetch(`${API_BASE_URL}/accounts/api/drivers/`, {
-      // Endpoint GET List Drivers
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +27,7 @@ async function loadDrivers(redirectUrl) {
     });
 
     if (response.ok) {
-      const driversData = await response.json(); // Data paginasi DRF
+      const driversData = await response.json();
       console.log("Drivers data fetched successfully:", driversData);
       showSnackbar("Data supir berhasil dimuat!", "success");
 
@@ -85,13 +75,8 @@ async function loadDrivers(redirectUrl) {
   }
 }
 
-/**
- * Mengambil detail driver dari API dan menampilkannya di pop-up.
- * @param {number} driverId - ID driver yang akan ditampilkan.
- * @param {string} redirectUrl - URL untuk redirect jika terjadi masalah otentikasi.
- */
 async function showDriverDetailPopup(driverId, redirectUrl) {
-  const popupOverlay = document.getElementById("popupOverlay"); // Ini adalah overlay untuk detail driver
+  const popupOverlay = document.getElementById("popupOverlay");
   const detailDriverName = document.getElementById("detailDriverName");
   const detailDriverEmail = document.getElementById("detailDriverEmail");
   const detailDriverPhone = document.getElementById("detailDriverPhone");
@@ -101,14 +86,12 @@ async function showDriverDetailPopup(driverId, redirectUrl) {
   const detailDriverCity = document.getElementById("detailDriverCity");
   const detailDriverHireDate = document.getElementById("detailDriverHireDate");
 
-  // Pastikan semua elemen ditemukan, ini penting agar tidak ada error 'null'
   if (!popupOverlay || !detailDriverName || !detailDriverEmail || !detailDriverPhone || !detailDriverBirthdate || !detailDriverSIM || !detailDriverStatus || !detailDriverCity || !detailDriverHireDate) {
     console.error("One or more elements for Driver Detail popup are missing. Check IDs in driver_screen.html.");
     showSnackbar("Gagal menampilkan detail: Beberapa elemen tidak ditemukan.", "error");
     return;
   }
 
-  // Kosongkan detail sebelumnya dan tampilkan loading
   detailDriverName.textContent = "Memuat...";
   detailDriverEmail.textContent = "Memuat...";
   detailDriverPhone.textContent = "Memuat...";
@@ -118,7 +101,6 @@ async function showDriverDetailPopup(driverId, redirectUrl) {
   detailDriverCity.textContent = "Memuat...";
   detailDriverHireDate.textContent = "Memuat...";
 
-  // Tampilkan pop-up overlay
   popupOverlay.classList.remove("hidden");
   popupOverlay.classList.add("show");
 
@@ -133,7 +115,6 @@ async function showDriverDetailPopup(driverId, redirectUrl) {
 
   try {
     const response = await fetch(`${API_BASE_URL}/accounts/api/drivers/${driverId}/`, {
-      // Endpoint GET Driver Detail
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -146,15 +127,14 @@ async function showDriverDetailPopup(driverId, redirectUrl) {
       console.log("Driver detail fetched successfully:", driverDetail);
       showSnackbar("Detail driver berhasil dimuat!", "success");
 
-      // --- ISI ELEMEN-ELEMEN POP-UP DENGAN DATA DARI JSON ---
-      detailDriverName.textContent = driverDetail.full_name || "N/A"; // Assuming full_name is available
+      detailDriverName.textContent = driverDetail.full_name || "N/A";
       detailDriverEmail.textContent = driverDetail.email || "N/A";
       detailDriverPhone.textContent = driverDetail.phone_number || "N/A";
-      detailDriverBirthdate.textContent = driverDetail.date_of_birth || "N/A"; // YYYY-MM-DD
+      detailDriverBirthdate.textContent = driverDetail.date_of_birth || "N/A";
       detailDriverSIM.textContent = driverDetail.driver_license_number || "N/A";
-      detailDriverStatus.textContent = driverDetail.status || "N/A"; // Use driver.status directly
+      detailDriverStatus.textContent = driverDetail.status || "N/A";
       detailDriverCity.textContent = driverDetail.city || "N/A";
-      detailDriverHireDate.textContent = driverDetail.hire_date || "N/A"; // YYYY-MM-DD
+      detailDriverHireDate.textContent = driverDetail.hire_date || "N/A";
     } else if (response.status === 401) {
       console.error("Unauthorized: Token invalid or expired for driver detail. Redirecting.");
       showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");

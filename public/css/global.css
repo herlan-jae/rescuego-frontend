@@ -1,4 +1,3 @@
-/* Variabel CSS */
 :root {
   --primary-color: #5e00ff;
   --primary-hover: #4a25cc;
@@ -8,7 +7,6 @@
   --radius: 12px;
 }
 
-/* Reset CSS */
 * {
   margin: 0;
   padding: 0;
@@ -28,7 +26,6 @@ body {
   font-size: 0.95rem;
 }
 
-/* Form Style */
 form {
   display: flex;
   flex-direction: column;
@@ -96,19 +93,14 @@ button:hover {
   background: var(--primary-hover);
 }
 
-/* Popup Style */
 .popup-overlay {
   position: fixed;
-  /* Gunakan 'inset: 0;' untuk menutupi seluruh viewport secara lebih robust */
-  inset: 0; /* Sama dengan top:0; right:0; bottom:0; left:0; */
-
+  inset: 0;
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.7);
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-out;
@@ -131,8 +123,7 @@ button:hover {
 }
 
 .popup {
-  /* Ini adalah kotak putih di dalam overlay */
-  background: #fff; /* ATURAN INI SEHARUSNYA MEMBERIKAN LATAR BELAKANG PUTIH */
+  background: #fff;
   padding: 24px;
   border-radius: var(--radius);
   width: 90%;
@@ -182,21 +173,18 @@ button:hover {
   color: var(--accent-color);
 }
 
-/* Logout Modal */
-/* Dalam public/css/global.css */
-
 #logoutModal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: none; /* Default to hidden */
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
 #logoutModal.show {
-  display: flex; /* Show the overlay when 'show' class is present */
+  display: flex;
 }
 
 #logoutModalContent {
@@ -204,28 +192,25 @@ button:hover {
   border-radius: 8px;
   padding: 24px;
   width: 320px;
-  opacity: 0; /* Initial state for animation */
-  transform: scale(0.95); /* Initial state for animation */
-  transition: all 0.3s ease; /* Animation duration */
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
 }
 
-/* State when modal is active/visible */
 #logoutModalContent.opacity-100.scale-100 {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Pastikan juga ada hidden class jika Anda menggunakannya secara bergantian */
 .hidden {
   display: none !important;
 }
 
-/* Dalam public/css/global.css (atau di tempat yang sesuai) */
 .modal-title {
   text-align: center;
-  font-size: 18px; /* Sesuaikan dengan ukuran yang Anda inginkan */
+  font-size: 18px;
   margin-bottom: 16px;
-  color: var(--primary-color); /* Gunakan variabel warna */
+  color: var(--primary-color);
 }
 
 .modal-actions {
@@ -236,12 +221,12 @@ button:hover {
 
 .spinner {
   border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid #fff; /* Warna spinner */
+  border-top: 4px solid #fff;
   border-radius: 50%;
   width: 24px;
   height: 24px;
   animation: spin 0.8s linear infinite;
-  position: absolute; /* Posisikan di tengah tombol */
+  position: absolute;
 }
 
 @keyframes spin {
@@ -253,43 +238,41 @@ button:hover {
   }
 }
 
-/* ==== SNACKBAR STYLES ==== */
 .snackbar {
   position: fixed;
-  z-index: 1001; /* Pastikan di atas semua elemen lain */
+  z-index: 1001;
   left: 50%;
-  transform: translateX(-50%) translateY(100px); /* Mulai dari bawah, geser ke atas */
+  transform: translateX(-50%) translateY(100px);
   bottom: 30px;
-  min-width: 280px; /* Lebar minimum agar pesan tidak terlalu sempit */
+  min-width: 280px;
   background-color: #333;
   color: #fff;
   text-align: center;
-  border-radius: 8px; /* Sedikit lebih membulat */
-  padding: 14px 20px; /* Padding lebih baik */
+  border-radius: 8px;
+  padding: 14px 20px;
   font-size: 16px;
   opacity: 0;
-  pointer-events: none; /* Agar tidak memblokir interaksi di bawahnya */
+  pointer-events: none;
   transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-  display: flex; /* Gunakan flex untuk menengahkan konten */
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .snackbar.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0); /* Geser ke posisi normal */
-  pointer-events: auto; /* Aktifkan interaksi saat terlihat */
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
-/* Warna untuk sukses dan gagal */
 .snackbar.success {
-  background-color: #4caf50; /* Hijau */
+  background-color: #4caf50;
 }
 
 .snackbar.error {
-  background-color: #f44336; /* Merah */
+  background-color: #f44336;
 }
 
 body.no-scroll {
-  overflow: hidden; /* Mencegah scrolling pada body */
+  overflow: hidden;
 }

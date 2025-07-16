@@ -96,11 +96,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Panggil fungsi setupLogoutModal untuk mengaktifkan modal logout
-        setupLogoutModal("login_screen.html"); // Sesuaikan URL redirect setelah logout
-
-        // Panggil fungsi untuk mengambil data dashboard
-        // Pastikan URL redirect sesuai dengan halaman login admin Anda
+        setupLogoutModal("login_screen.html");
         fetchDashboardData("admin", "login_screen.html");
       });
     </script>

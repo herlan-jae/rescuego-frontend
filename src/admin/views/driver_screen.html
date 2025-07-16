@@ -202,18 +202,16 @@
         setupLogoutModal("login_screen.html");
         loadDrivers("login_screen.html");
 
-        // Event listener untuk tombol 'Lihat' (untuk menampilkan detail driver)
         document.getElementById("driverTableBody").addEventListener("click", function (event) {
           if (event.target.classList.contains("link-detail")) {
             const driverId = event.target.dataset.id;
-            showDriverDetailPopup(driverId, "login_screen.html"); // Panggil fungsi ini
+            showDriverDetailPopup(driverId, "login_screen.html");
             console.log("Tombol Lihat diklik untuk Driver ID:", driverId);
           }
         });
 
-        // Event listener untuk menutup popup detail supir
         const closeDriverDetailPopupBtn = document.getElementById("closePopupBtn");
-        const driverDetailPopupOverlay = document.getElementById("popupOverlay"); // Menggunakan ID yang sama dengan reservasi
+        const driverDetailPopupOverlay = document.getElementById("popupOverlay");
         if (closeDriverDetailPopupBtn && driverDetailPopupOverlay) {
           closeDriverDetailPopupBtn.addEventListener("click", function () {
             driverDetailPopupOverlay.classList.remove("show");

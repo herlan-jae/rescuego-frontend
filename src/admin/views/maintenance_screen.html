@@ -136,18 +136,15 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         setupLogoutModal("login_screen.html");
-        loadMaintenance("login_screen.html"); // Muat data perbaikan saat halaman dimuat
-
-        // Event listener untuk tombol 'Lihat' (untuk menampilkan detail perbaikan)
+        loadMaintenance("login_screen.html");
         document.getElementById("maintenanceTableBody").addEventListener("click", function (event) {
           if (event.target.classList.contains("link-detail")) {
             const recordId = event.target.dataset.id;
-            showMaintenanceDetailPopup(recordId, "login_screen.html"); // Fungsi ini akan dibuat selanjutnya
+            showMaintenanceDetailPopup(recordId, "login_screen.html");
             console.log("Tombol Lihat diklik untuk Perbaikan ID:", recordId);
           }
         });
 
-        // Event listener untuk menutup pop-up detail perbaikan
         const closePopupBtn = document.getElementById("closePopupBtn");
         const maintenanceDetailPopupOverlay = document.getElementById("popupOverlay");
         if (closePopupBtn && maintenanceDetailPopupOverlay) {
@@ -161,15 +158,12 @@
           });
         }
 
-        // Event Listener untuk Update Status Perbaikan (akan diimplementasikan nanti)
         const updateMaintenanceStatusBtn = document.getElementById("updateMaintenanceStatusBtn");
         const maintenanceStatusSelect = document.getElementById("maintenanceStatusSelect");
         if (updateMaintenanceStatusBtn && maintenanceStatusSelect) {
           updateMaintenanceStatusBtn.addEventListener("click", function () {
             if (currentMaintenanceRecordId) {
-              // currentMaintenanceRecordId akan dideklarasikan di JS
               const newStatus = maintenanceStatusSelect.value;
-              // updateMaintenanceStatus(currentMaintenanceRecordId, newStatus, "login_screen.html"); // Fungsi ini akan dibuat
               showSnackbar("Update status perbaikan diklik. Fungsi belum diimplementasi.", "info");
             } else {
               showSnackbar("Tidak ada perbaikan yang sedang dipilih untuk diupdate statusnya.", "error");

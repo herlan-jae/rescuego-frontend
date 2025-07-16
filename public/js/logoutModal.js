@@ -1,7 +1,3 @@
-// public/js/logoutModal.js
-
-// Pastikan API_BASE_URL didefinisikan jika ada backend logout endpoint
-// const API_BASE_URL = 'http://localhost:8000'; // Sesuaikan jika Anda punya logout API
 function setupLogoutModal(redirectUrl) {
   document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("logoutBtn");
@@ -34,19 +30,15 @@ function setupLogoutModal(redirectUrl) {
     }
 
     async function handleLogout() {
-      // Hapus token dari localStorage
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
 
       console.log("Tokens removed from localStorage. Redirecting...");
+      showSnackbar("Anda telah berhasil logout!", "success");
 
-      // Tampilkan snackbar sukses logout
-      showSnackbar("Anda telah berhasil logout!", "success"); // Panggil dari utils.js
-
-      // Beri sedikit waktu untuk snackbar terlihat sebelum redirect
       setTimeout(() => {
         window.location.href = redirectUrl;
-      }, 1000); // Redirect setelah 1 detik
+      }, 1000);
     }
 
     logoutBtn.addEventListener("click", (e) => {
@@ -59,7 +51,7 @@ function setupLogoutModal(redirectUrl) {
     });
 
     confirmBtn.addEventListener("click", () => {
-      hideModal(); // Sembunyikan modal sebelum memproses logout
+      hideModal();
       handleLogout();
     });
 
