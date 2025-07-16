@@ -6,9 +6,6 @@
     <title>Perbaikan - RescueGo</title>
     <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
 
-    <script src="/public/js/utils.js"></script>
-    <script src="/public/js/auth.js"></script>
-
     <link rel="stylesheet" href="/public/css/global.css" />
     <link rel="stylesheet" href="/src/admin/css/style.css" />
   </head>
@@ -67,30 +64,9 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="maintenanceTableBody">
                 <tr>
-                  <td>1</td>
-                  <td>B 1111 BB (Toyota Hiace)</td>
-                  <td>Mesin sering mati mendadak</td>
-                  <td>2024-07-10</td>
-                  <td class="status-cell">Pending</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>B 2222 BB (Suzuki APV)</td>
-                  <td>Ban kempes</td>
-                  <td>2024-07-12</td>
-                  <td class="status-cell">Selesai</td>
-                  <td><span class="link-detail">Lihat</span></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>B 3333 BB (Ford Transit)</td>
-                  <td>Lampu depan pecah</td>
-                  <td>2024-07-14</td>
-                  <td class="status-cell">Dalam Proses</td>
-                  <td><span class="link-detail">Lihat</span></td>
+                  <td colspan="6" class="text-center py-4">Memuat data perbaikan...</td>
                 </tr>
               </tbody>
             </table>
@@ -99,39 +75,39 @@
       </main>
     </div>
 
-    <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-overlay hidden" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
         <h3>Detail Perbaikan</h3>
         <div class="popup-content">
           <div class="column">
             <h4>Ambulans</h4>
-            <p>Nomor Polisi: B 1111 BB</p>
-            <p>Tipe: Basic</p>
-            <p>Merek/Model: Toyota Hiace</p>
-            <p>Keterangan: Mesin sering mati mendadak</p>
+            <p>Nomor Polisi: <span id="detailMaintenanceAmbulancePlate"></span></p>
+            <p>Tipe: <span id="detailMaintenanceAmbulanceType"></span></p>
+            <p>Merek/Model: <span id="detailMaintenanceAmbulanceBrandModel"></span></p>
+            <p>Keterangan: <span id="detailMaintenanceDescription"></span></p>
           </div>
           <div class="column">
             <h4>Informasi Perbaikan</h4>
-            <p>ID Pelaporan: 001</p>
-            <p>Tanggal Pelaporan: 2024-07-10</p>
-            <p>Status: <span id="statusText">Pending</span></p>
-            <p>Prioritas: Tinggi</p>
-            <p>Estimasi Selesai: 2024-07-20</p>
+            <p>ID Pelaporan: <span id="detailMaintenanceReportId"></span></p>
+            <p>Tanggal Pelaporan: <span id="detailMaintenanceReportDate"></span></p>
+            <p>Status: <span id="detailMaintenanceStatus"></span></p>
+            <p>Prioritas: <span id="detailMaintenancePriority"></span></p>
+            <p>Estimasi Selesai: <span id="detailMaintenanceEstimateDate"></span></p>
           </div>
         </div>
         <div class="status-control">
-          <label for="status">Ganti Status</label>
-          <select id="status">
-            <option>Pending</option>
-            <option>Dalam Proses</option>
-            <option>Selesai</option>
-            <option>Dibatalkan</option>
+          <label for="maintenanceStatusSelect">Ganti Status</label>
+          <select id="maintenanceStatusSelect">
+            <option value="pending">Pending</option>
+            <option value="in_progress">Dalam Proses</option>
+            <option value="completed">Selesai</option>
+            <option value="cancelled">Dibatalkan</option>
           </select>
         </div>
         <div class="form-actions">
-          <button class="btn-outline">Batal</button>
-          <button class="btn-primary">Update Status</button>
+          <button type="button" class="btn-outline" id="cancelMaintenanceUpdate">Batal</button>
+          <button type="button" class="btn-primary" id="updateMaintenanceStatusBtn">Update Status</button>
         </div>
       </div>
     </div>
@@ -148,16 +124,59 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div id="snackbar" class="snackbar">
+    <div id="snackbar" class="snackbar hidden">
       <span id="snackbarMessage"></span>
     </div>
 
+    <script src="/public/js/utils.js"></script>
     <script src="/public/js/logoutModal.js"></script>
-    <script>
-      // Panggil fungsi global logout modal dengan URL redirect yang sesuai
-      setupLogoutModal("login_screen.html");
-    </script>
     <script src="/public/js/navActive.js"></script>
-    <script src="/src/driver/js/script.js"></script>
+    <script src="/public/js/maintenance.js"></script>
+    <script src="/src/admin/js/script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setupLogoutModal("login_screen.html");
+        loadMaintenance("login_screen.html"); // Muat data perbaikan saat halaman dimuat
+
+        // Event listener untuk tombol 'Lihat' (untuk menampilkan detail perbaikan)
+        document.getElementById("maintenanceTableBody").addEventListener("click", function (event) {
+          if (event.target.classList.contains("link-detail")) {
+            const recordId = event.target.dataset.id;
+            showMaintenanceDetailPopup(recordId, "login_screen.html"); // Fungsi ini akan dibuat selanjutnya
+            console.log("Tombol Lihat diklik untuk Perbaikan ID:", recordId);
+          }
+        });
+
+        // Event listener untuk menutup pop-up detail perbaikan
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        const maintenanceDetailPopupOverlay = document.getElementById("popupOverlay");
+        if (closePopupBtn && maintenanceDetailPopupOverlay) {
+          closePopupBtn.addEventListener("click", function () {
+            hideMaintenanceDetailPopup();
+          });
+          maintenanceDetailPopupOverlay.addEventListener("click", function (event) {
+            if (event.target === this) {
+              hideMaintenanceDetailPopup();
+            }
+          });
+        }
+
+        // Event Listener untuk Update Status Perbaikan (akan diimplementasikan nanti)
+        const updateMaintenanceStatusBtn = document.getElementById("updateMaintenanceStatusBtn");
+        const maintenanceStatusSelect = document.getElementById("maintenanceStatusSelect");
+        if (updateMaintenanceStatusBtn && maintenanceStatusSelect) {
+          updateMaintenanceStatusBtn.addEventListener("click", function () {
+            if (currentMaintenanceRecordId) {
+              // currentMaintenanceRecordId akan dideklarasikan di JS
+              const newStatus = maintenanceStatusSelect.value;
+              // updateMaintenanceStatus(currentMaintenanceRecordId, newStatus, "login_screen.html"); // Fungsi ini akan dibuat
+              showSnackbar("Update status perbaikan diklik. Fungsi belum diimplementasi.", "info");
+            } else {
+              showSnackbar("Tidak ada perbaikan yang sedang dipilih untuk diupdate statusnya.", "error");
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

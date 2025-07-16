@@ -6,9 +6,6 @@
     <title>Ambulans - RescueGo</title>
     <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
 
-    <script src="/public/js/utils.js"></script>
-    <script src="/public/js/auth.js"></script>
-
     <link rel="stylesheet" href="/public/css/global.css" />
     <link rel="stylesheet" href="/src/admin/css/style.css" />
   </head>
@@ -73,13 +70,7 @@
               </thead>
               <tbody id="ambulanceTableBody">
                 <tr>
-                  <td>1</td>
-                  <td>B 1111 BB</td>
-                  <td>Basic</td>
-                  <td>Toyota Hiace</td>
-                  <td class="status-cell">Aktif</td>
-                  <td>Jakarta Pusat</td>
-                  <td><span class="link-detail">Lihat</span></td>
+                  <td colspan="7" class="text-center py-4">Memuat data ambulans...</td>
                 </tr>
               </tbody>
             </table>
@@ -88,7 +79,7 @@
       </main>
     </div>
 
-    <div class="popup-overlay" id="addAmbulanceOverlay">
+    <div class="popup-overlay hidden" id="addAmbulanceOverlay">
       <div class="popup add-ambulance-popup">
         <h3 class="popup-title">Tambah Baru</h3>
         <form id="addAmbulanceForm" class="ambulance-form">
@@ -142,25 +133,29 @@
       </div>
     </div>
 
-    <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-overlay hidden" id="popupOverlay">
       <div class="popup">
         <span class="close-btn" id="closePopupBtn">&times;</span>
         <h3>Detail</h3>
         <div class="popup-content">
           <div class="column">
             <h4>Ambulans</h4>
-            <p>Nomor Polisi: B 1111 BB</p>
-            <p>Tipe: Basic</p>
-            <p>Brand: Toyota Hiace</p>
-            <p>Model: Hiace</p>
+            <p>Nomor Polisi: <span id="detailAmbulancePlate"></span></p>
+            <p>Tipe: <span id="detailAmbulanceType"></span></p>
+            <p>Brand: <span id="detailAmbulanceBrand"></span></p>
+            <p>Model: <span id="detailAmbulanceModel"></span></p>
           </div>
           <div class="column">
             <h4 class="invisible">Detail Lanjutan</h4>
-            <p>Tahun: 2021</p>
-            <p>Kapasitas: 1</p>
-            <p>Kota: Jakarta Pusat</p>
-            <p>Fasilitas: P3K</p>
+            <p>Tahun: <span id="detailAmbulanceYear"></span></p>
+            <p>Kapasitas: <span id="detailAmbulanceCapacity"></span></p>
+            <p>Kota: <span id="detailAmbulanceCity"></span></p>
+            <p>Fasilitas: <span id="detailAmbulanceFacilities"></span></p>
           </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" id="editAmbulanceBtn">Edit</button>
+          <button type="button" class="btn-primary" id="deleteAmbulanceBtn" style="background-color: var(--accent-color)">Hapus</button>
         </div>
       </div>
     </div>
@@ -177,16 +172,56 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <div id="snackbar" class="snackbar">
+    <div id="snackbar" class="snackbar hidden">
       <span id="snackbarMessage"></span>
     </div>
 
+    <script src="/public/js/utils.js"></script>
     <script src="/public/js/logoutModal.js"></script>
-    <script>
-      setupLogoutModal("login_screen.html");
-    </script>
     <script src="/public/js/navActive.js"></script>
+    <script src="/public/js/ambulances.js"></script>
     <script src="/src/admin/js/script.js"></script>
     <script src="/src/admin/js/addAmbulances.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setupLogoutModal("login_screen.html");
+        loadAmbulances("login_screen.html");
+
+        document.getElementById("ambulanceTableBody").addEventListener("click", function (event) {
+          if (event.target.classList.contains("link-detail")) {
+            const ambulanceId = event.target.dataset.id;
+            showAmbulanceDetailPopup(ambulanceId, "login_screen.html");
+            console.log("Tombol Lihat diklik untuk Ambulans ID:", ambulanceId);
+          }
+        });
+
+        // Event listener untuk menutup popup detail ambulans
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        const ambulanceDetailPopupOverlay = document.getElementById("popupOverlay");
+        if (closePopupBtn && ambulanceDetailPopupOverlay) {
+          closePopupBtn.addEventListener("click", function () {
+            hideAmbulanceDetailPopup(); // Panggil fungsi yang benar
+          });
+          ambulanceDetailPopupOverlay.addEventListener("click", function (event) {
+            if (event.target === this) {
+              hideAmbulanceDetailPopup(); // Panggil fungsi yang benar
+            }
+          });
+        }
+
+        // Event listener untuk tombol Hapus
+        const deleteAmbulanceBtn = document.getElementById("deleteAmbulanceBtn");
+        if (deleteAmbulanceBtn) {
+          deleteAmbulanceBtn.addEventListener("click", function () {
+            if (currentAmbulanceId) {
+              deleteAmbulance(currentAmbulanceId, "login_screen.html");
+            } else {
+              showSnackbar("Tidak ada ambulans yang sedang dipilih untuk dihapus.", "error");
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
