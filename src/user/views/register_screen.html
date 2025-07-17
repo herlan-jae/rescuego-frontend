@@ -30,17 +30,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="first-name" class="text-sm font-semibold text-gray-800">Nama Depan</label>
-            <input type="text" id="first-name" placeholder="John" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
+            <input type="text" id="first-name" placeholder="Nama depan" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
           </div>
           <div>
             <label for="last-name" class="text-sm font-semibold text-gray-800">Nama Belakang</label>
-            <input type="text" id="last-name" placeholder="Doe" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" />
+            <input type="text" id="last-name" placeholder="Nama belakang" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" />
           </div>
         </div>
 
         <div>
           <label for="username" class="text-sm font-semibold text-gray-800">Username</label>
-          <input type="text" id="username" placeholder="johndoe" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
+          <input type="text" id="username" placeholder="Username" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
         </div>
 
         <div>
@@ -50,7 +50,7 @@
 
         <div>
           <label for="city" class="text-sm font-semibold text-gray-800">Kota</label>
-          <input type="text" id="city" placeholder="Jakarta" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
+          <input type="text" id="city" placeholder="Nama Kota" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500" required />
         </div>
         <div>
           <label for="phone-number" class="text-sm font-semibold text-gray-800">Nomor Telepon</label>
@@ -95,20 +95,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // [MODIFIED] Sesuaikan ID yang dikirim ke fungsi
-        handleRegisterFormSubmit(
-          "registerForm",
-          "username",
-          "first-name", // Diubah dari fullname
-          "last-name", // Ditambahkan
-          "email",
-          "city", // Ditambahkan
-          "phone-number", // Ditambahkan
-          "password",
-          "confirm-password",
-          "errorMsg",
-          "login_screen.html"
-        );
+        handleRegisterFormSubmit("registerForm", "username", "first-name", "last-name", "email", "city", "phone-number", "password", "confirm-password", "errorMsg", "login_screen.html");
       });
     </script>
   </body>

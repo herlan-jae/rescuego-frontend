@@ -1,10 +1,8 @@
-/* Styling dasar */
 body {
   font-family: "Inter", sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Styling untuk Navigasi Bawah yang Aktif */
 .nav-active div {
   background-color: #efe8ff;
 }
@@ -13,12 +11,11 @@ body {
   font-weight: 600;
 }
 
-/* Styling untuk form input agar konsisten */
 .form-input {
   width: 100%;
-  border: 1px solid #d1d5db; /* border-gray-300 */
+  border: 1px solid #d1d5db;
   background-color: white;
-  border-radius: 0.5rem; /* rounded-lg */
+  border-radius: 0.5rem;
   padding: 0.75rem 1rem;
   transition: all 0.2s ease-in-out;
 }
@@ -28,7 +25,6 @@ body {
   box-shadow: 0 0 0 2px rgba(91, 46, 255, 0.3);
 }
 
-/* Styling untuk radio button kustom */
 .radio-card {
   display: flex;
   justify-content: space-between;
@@ -36,16 +32,15 @@ body {
   padding: 1rem 1.5rem;
   background-color: white;
   border: 2px solid transparent;
-  border-radius: 0.75rem; /* rounded-xl */
+  border-radius: 0.75rem;
   cursor: pointer;
   transition: border-color 0.2s ease-in-out;
 }
 
 .radio-card input[type="radio"] {
-  display: none; /* Sembunyikan radio button asli */
+  display: none;
 }
 
-/* Lingkaran luar kustom */
 .radio-custom-circle {
   height: 24px;
   width: 24px;
@@ -56,7 +51,6 @@ body {
   transition: border-color 0.2s ease-in-out;
 }
 
-/* Lingkaran dalam kustom (muncul saat checked) */
 .radio-custom-circle::before {
   content: "";
   height: 12px;
@@ -67,7 +61,6 @@ body {
   transition: transform 0.2s ease-in-out;
 }
 
-/* Perubahan style saat radio button dipilih */
 .radio-card input[type="radio"]:checked + .radio-custom-circle {
   border-color: #5b2eff;
 }

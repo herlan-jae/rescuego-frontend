@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(errorMessage || "Gagal menyimpan perubahan.");
       }
 
-      // Tampilkan notifikasi dan muat ulang data (hanya satu kali)
       showSnackbar("Data berhasil diperbarui!", "success");
       await loadProfileData();
     } catch (error) {
@@ -123,12 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // --- Event Listeners ---
   profileForm.addEventListener("submit", handleSaveProfile);
   cancelBtn.addEventListener("click", loadProfileData);
   profileForm.addEventListener("input", checkForChanges);
 
-  // --- Initial Setup ---
   loadProfileData();
 
   if (typeof setupLogoutModal === "function") {

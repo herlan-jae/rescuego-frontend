@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Sesuaikan objek ini dengan `EMERGENCY_TYPE_CHOICES` Anda
   const emergencyTypes = {
     medical: "Darurat Medis",
     accident: "Kecelakaan Lalu Lintas",
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("nextBtn").addEventListener("click", () => {
     const selectedType = document.querySelector('input[name="emergency_type"]:checked');
     if (selectedType) {
-      // Simpan 'key' (misal: 'medical') ke sessionStorage
       sessionStorage.setItem("emergency_type_key", selectedType.value);
       window.location.href = "reservation_create_step2.html";
     } else {

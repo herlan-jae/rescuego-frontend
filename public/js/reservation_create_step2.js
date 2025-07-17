@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Pastikan user sudah login
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) {
     window.location.href = "/src/auth/login.html";
     return;
   }
 
-  // 1. Ambil data dari halaman sebelumnya dan simpan di variabel
   const emergencyTypeKey = sessionStorage.getItem("emergency_type_key");
   if (!emergencyTypeKey) {
     showSnackbar("Jenis darurat tidak ditemukan, silakan mulai lagi.", "error");
@@ -14,12 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Event listener untuk tombol kembali
   document.getElementById("backBtn").addEventListener("click", () => {
     window.location.href = "reservation_create_step1.html";
   });
 
-  // Event listener untuk form submission
   document.getElementById("patientInfoForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const confirmBtn = document.getElementById("confirmBtn");
@@ -28,11 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const genderMapping = { "Laki-laki": "male", Perempuan: "female" };
 
-    // 2. Buat payload dengan semua data yang diperlukan
     const payload = {
-      emergency_type: emergencyTypeKey, // Variabel sekarang sudah tersedia di sini
+      emergency_type: emergencyTypeKey,
       patient_gender: genderMapping[document.getElementById("patient_gender").value],
-      priority: "high", // Menggunakan kunci dari PRIORITY_CHOICES
+      priority: "high",
 
       patient_name: document.getElementById("patient_name").value,
       patient_age: parseInt(document.getElementById("patient_age").value),

@@ -9,9 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentContainer = document.getElementById("current-reservations");
   const historyContainer = document.getElementById("history-reservations");
 
-  /**
-   * Mengambil nama pengguna dari API profil
-   */
   const fetchUserProfile = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/accounts/api/profile/`, {
@@ -26,9 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  /**
-   * Membuat kartu reservasi (fungsi yang sama dari reservation_list.js)
-   */
   const createReservationCard = (reservation) => {
     const isHistory = ["Selesai", "Dibatalkan", "Completed", "Cancelled", "Rejected"].includes(reservation.status_display);
     const icon = isHistory ? "✔️" : "⚠️";
@@ -43,14 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <span class="text-[#5B2EFF] text-xl font-bold">›</span>
         `;
-    // Jika ingin modal aktif di sini, tambahkan event listener
-    // card.addEventListener('click', () => openModal(reservation.id));
     return card;
   };
 
-  /**
-   * Mengambil dan menampilkan ringkasan reservasi
-   */
   const fetchReservationsSummary = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/reservations/api/`, {
@@ -65,14 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentReservations = data.results.filter((r) => !["Selesai", "Dibatalkan", "Completed", "Cancelled", "Rejected"].includes(r.status_display));
       const historyReservations = data.results.filter((r) => ["Selesai", "Dibatalkan", "Completed", "Cancelled", "Rejected"].includes(r.status_display));
 
-      // Tampilkan reservasi saat ini (jika ada)
       if (currentReservations.length > 0) {
         currentContainer.appendChild(createReservationCard(currentReservations[0]));
       } else {
         currentContainer.innerHTML = '<p class="text-sm text-gray-500">Tidak ada reservasi aktif.</p>';
       }
 
-      // Tampilkan 2 riwayat terbaru
       if (historyReservations.length > 0) {
         historyReservations.slice(0, 2).forEach((res) => {
           historyContainer.appendChild(createReservationCard(res));
@@ -85,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Panggil kedua fungsi saat halaman dimuat
   fetchUserProfile();
   fetchReservationsSummary();
 });

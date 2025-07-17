@@ -89,7 +89,7 @@ function hideAmbulanceDetailPopup() {
 }
 
 async function showAmbulanceDetailPopup(ambulanceId, redirectUrl) {
-  const popupOverlay = document.getElementById("popupOverlay"); // Overlay untuk detail ambulans
+  const popupOverlay = document.getElementById("popupOverlay");
   const detailAmbulancePlate = document.getElementById("detailAmbulancePlate");
   const detailAmbulanceType = document.getElementById("detailAmbulanceType");
   const detailAmbulanceBrand = document.getElementById("detailAmbulanceBrand");

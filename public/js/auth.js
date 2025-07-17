@@ -13,10 +13,9 @@ function togglePassword(eyeIconId, passwordInputId, eyeOnSrc, eyeOffSrc) {
   eyeIcon.src = isPassword ? eyeOffSrc : eyeOnSrc;
 }
 
-// Fungsi yang sudah ada untuk login
 function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, errorMsgId, redirectUrl) {
   const loginForm = document.getElementById(loginFormId);
-  const loginButton = document.getElementById("loginButton"); // Asumsi tombol login punya ID ini
+  const loginButton = document.getElementById("loginButton");
   const buttonText = document.getElementById("buttonText");
   const loadingSpinner = document.getElementById("loadingSpinner");
   const errorMsg = document.getElementById(errorMsgId);
@@ -31,7 +30,6 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
     const email = document.getElementById(emailInputId)?.value.trim();
     const password = document.getElementById(passwordInputId)?.value.trim();
 
-    // Sembunyikan pesan error sebelumnya
     if (errorMsg) errorMsg.classList.add("hidden");
 
     if (!email || !password) {
@@ -43,7 +41,6 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
       return;
     }
 
-    // Tampilkan loading
     if (buttonText) buttonText.classList.add("hidden");
     if (loadingSpinner) loadingSpinner.classList.remove("hidden");
     if (loginButton) loginButton.disabled = true;
@@ -82,7 +79,6 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
       showSnackbar(msg, "error");
       console.error("Login error:", error);
     } finally {
-      // Sembunyikan loading
       if (buttonText) buttonText.classList.remove("hidden");
       if (loadingSpinner) loadingSpinner.classList.add("hidden");
       if (loginButton) loginButton.disabled = false;
@@ -90,7 +86,6 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
   });
 }
 
-// Ganti fungsi handleRegisterFormSubmit Anda dengan yang ini
 function handleRegisterFormSubmit(formId, usernameId, firstNameId, lastNameId, emailId, cityId, phoneNumberId, passwordId, confirmPasswordId, errorMsgId, redirectUrl) {
   const registerForm = document.getElementById(formId);
   const registerButton = document.getElementById("registerButton");
@@ -106,7 +101,6 @@ function handleRegisterFormSubmit(formId, usernameId, firstNameId, lastNameId, e
   registerForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // 1. Ambil nilai dari semua input yang sudah diperbarui
     const username = document.getElementById(usernameId)?.value.trim();
     const first_name = document.getElementById(firstNameId)?.value.trim();
     const last_name = document.getElementById(lastNameId)?.value.trim();
@@ -118,7 +112,6 @@ function handleRegisterFormSubmit(formId, usernameId, firstNameId, lastNameId, e
 
     errorMsg.classList.add("hidden");
 
-    // 2. Validasi client-side
     if (!username || !first_name || !email || !city || !password || !password_confirm) {
       errorMsg.textContent = "Semua kolom yang wajib (*), harus diisi.";
       errorMsg.classList.remove("hidden");
@@ -138,7 +131,6 @@ function handleRegisterFormSubmit(formId, usernameId, firstNameId, lastNameId, e
     registerButton.disabled = true;
 
     try {
-      // 3. [FIXED] Siapkan payload dengan struktur yang benar
       const payload = {
         username,
         first_name,
