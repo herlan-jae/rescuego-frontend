@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservasi - RescueGo</title>
+    <title>Buat Reservasi (Langkah 1) - RescueGo</title>
     <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/public/css/global.css" />
     <link rel="stylesheet" href="/public/css/reservation.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-gray-100 min-h-screen pb-32">
+  <body class="bg-gray-50 min-h-screen pb-32">
     <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <img src="/public/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
@@ -17,21 +19,17 @@
       <img src="/public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
     </header>
 
-    <main class="px-6 py-6">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-bold text-gray-800">Reservasi Kamu</h1>
-        <a href="reservation_create_step1.html" class="bg-[#5B2EFF] text-white text-sm px-4 py-2 rounded-md font-semibold hover:bg-indigo-700">Buat Reservasi</a>
+    <main class="max-w-xl mx-auto p-6">
+      <div class="flex items-center gap-4 mb-8">
+        <a href="reservation_screen.html" class="text-2xl text-[#5B2EFF] font-bold">‹</a>
+        <h1 class="text-2xl font-bold text-gray-800">Buat Reservasi</h1>
       </div>
 
-      <section class="mb-6">
-        <h2 class="text-sm font-semibold text-gray-700 mb-2">Reservasi saat ini</h2>
-        <div id="current-reservations" class="space-y-3"></div>
-      </section>
-
-      <section>
-        <h2 class="text-sm font-semibold text-gray-700 mb-2">Riwayat Reservasi</h2>
-        <div id="history-reservations" class="space-y-3"></div>
-      </section>
+      <h2 class="text-gray-600 font-medium mb-4">Apa keadaan darurat kamu?</h2>
+      <form id="emergencyTypeForm" class="space-y-4"></form>
+      <div class="mt-8">
+        <button id="nextBtn" class="w-full bg-[#5B2EFF] text-white font-semibold py-3 rounded-lg hover:bg-[#4d25d4] transition shadow-sm">Selanjutnya</button>
+      </div>
     </main>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-inner px-6 py-3 flex justify-around items-center border-t">
@@ -43,20 +41,11 @@
       <a href="profile_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]"><img src="/public/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" /><span class="text-xs mt-1">Profil</span></a>
     </nav>
 
-    <div id="reservationModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
-      <div id="modalBox" class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md relative">
-        <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-        <h2 class="text-xl font-bold text-center mb-6 text-gray-800">Detail Reservasi</h2>
-        <div id="modal-content" class="space-y-4"></div>
-        <button id="cancelButton" class="w-full mt-6 bg-red-500 text-white font-bold py-3 rounded-lg hover:bg-red-600 transition-colors">Batalkan Reservasi</button>
-      </div>
-    </div>
-
     <div id="snackbar" class="snackbar hidden">
       <span id="snackbarMessage"></span>
     </div>
 
     <script src="/public/js/utils.js"></script>
-    <script src="/public/js/reservation_list.js"></script>
+    <script src="/public/js/reservation_create_step1.js"></script>
   </body>
 </html>

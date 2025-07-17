@@ -1,0 +1,50 @@
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+}
+
+/* --- Navigation --- */
+.nav-active div {
+  background-color: #efe8ff; /* Light purple background */
+}
+.nav-active span {
+  color: #5b2eff; /* Purple text */
+  font-weight: 600;
+}
+
+/* --- Modal & Toast Transitions --- */
+#logoutModal.show #logoutModalContent {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#toastSuccess.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+
+/* --- Form --- */
+.input-disabled {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  cursor: not-allowed;
+  color: #4b5563; /* text-gray-600 */
+}
+
+.logout {
+  font-size: large;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  background-color: var(--accent-color);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  display: block;
+}
+
+.logout:hover {
+  background-color: #ff00006f;
+  color: var(--accent-color);
+}

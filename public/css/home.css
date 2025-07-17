@@ -1,0 +1,19 @@
+/* Styling dasar */
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Styling untuk Navigasi Bawah yang Aktif */
+.nav-active div {
+  background-color: #efe8ff; /* Light purple background */
+}
+.nav-active span {
+  color: #5b2eff; /* Purple text */
+  font-weight: 600;
+}
+
+/* Styling untuk modal (bisa digabung dengan reservation.css jika sama) */
+#reservationModal.hidden {
+  display: none;
+}

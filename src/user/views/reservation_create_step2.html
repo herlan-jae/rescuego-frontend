@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buat Reservasi (Langkah 2) - RescueGo</title>
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="stylesheet" href="/public/css/reservation.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50 min-h-screen pb-32">
+    <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
+        <span class="font-bold text-lg">RescueGo</span>
+      </div>
+      <img src="/public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
+    </header>
+
+    <main class="max-w-3xl mx-auto p-6">
+      <div class="flex items-center gap-4 mb-8">
+        <a href="reservation_create_step1.html" class="text-2xl text-[#5B2EFF] font-bold">‹</a>
+        <h1 class="text-2xl font-bold text-gray-800">Buat Reservasi</h1>
+      </div>
+
+      <form id="patientInfoForm" class="bg-white p-8 rounded-xl shadow-sm">
+        <div class="mb-6 pb-6 border-b">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Informasi Pasien</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <div>
+              <label for="patient_name" class="block text-sm font-medium text-gray-600 mb-1">Nama Lengkap</label>
+              <input id="patient_name" type="text" class="form-input" required />
+            </div>
+            <div>
+              <label for="patient_gender" class="block text-sm font-medium text-gray-600 mb-1">Jenis Kelamin</label>
+              <select id="patient_gender" class="form-input" required>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+            <div>
+              <label for="patient_age" class="block text-sm font-medium text-gray-600 mb-1">Umur</label>
+              <input id="patient_age" type="number" class="form-input" required />
+            </div>
+            <div>
+              <label for="patient_condition" class="block text-sm font-medium text-gray-600 mb-1">Kondisi Medis</label>
+              <input id="patient_condition" type="text" class="form-input" placeholder="Contoh: Sakit Dada" required />
+            </div>
+            <div class="md:col-span-2">
+              <label for="current_symptoms" class="block text-sm font-medium text-gray-600 mb-1">Gejala</label>
+              <textarea id="current_symptoms" rows="3" class="form-input" placeholder="Contoh: Sesak nafas, nyeri" required></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <label for="medical_history" class="block text-sm font-medium text-gray-600 mb-1">Riwayat Medis / Alergi (Opsional)</label>
+              <input id="medical_history" type="text" placeholder="Contoh: Alergi kacang" class="form-input" />
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6 pb-6 border-b">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Lokasi</h2>
+          <div class="space-y-4">
+            <div>
+              <label for="pickup_address" class="block text-sm font-medium text-gray-600 mb-1">Alamat Penjemputan</label>
+              <textarea id="pickup_address" rows="3" class="form-input" required></textarea>
+            </div>
+            <div>
+              <label for="destination_address" class="block text-sm font-medium text-gray-600 mb-1">Alamat Tujuan</label>
+              <textarea id="destination_address" rows="3" class="form-input" required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Kontak Darurat</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <div>
+              <label for="emergency_contact_name" class="block text-sm font-medium text-gray-600 mb-1">Nama</label>
+              <input id="emergency_contact_name" type="text" class="form-input" required />
+            </div>
+            <div>
+              <label for="emergency_contact_phone" class="block text-sm font-medium text-gray-600 mb-1">Nomor Telepon</label>
+              <input id="emergency_contact_phone" type="tel" class="form-input" required />
+            </div>
+            <div class="md:col-span-2">
+              <label for="emergency_contact_relationship" class="block text-sm font-medium text-gray-600 mb-1">Hubungan</label>
+              <input id="emergency_contact_relationship" type="text" class="form-input" placeholder="Contoh: Keluarga, Teman" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 mt-8">
+          <button type="button" id="backBtn" class="w-full md:w-auto flex-1 bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition">Sebelumnya</button>
+          <button type="submit" id="confirmBtn" class="w-full md:w-auto flex-1 bg-[#5B2EFF] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#4d25d4] transition">Konfirmasi</button>
+        </div>
+      </form>
+    </main>
+
+    <div id="snackbar" class="snackbar hidden">
+      <span id="snackbarMessage"></span>
+    </div>
+
+    <script src="/public/js/utils.js"></script>
+    <script src="/public/js/reservation_create_step2.js"></script>
+  </body>
+</html>

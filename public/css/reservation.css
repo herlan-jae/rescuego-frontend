@@ -1,0 +1,79 @@
+/* Styling dasar */
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Styling untuk Navigasi Bawah yang Aktif */
+.nav-active div {
+  background-color: #efe8ff;
+}
+.nav-active span {
+  color: #5b2eff;
+  font-weight: 600;
+}
+
+/* Styling untuk form input agar konsisten */
+.form-input {
+  width: 100%;
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  background-color: white;
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #5b2eff;
+  box-shadow: 0 0 0 2px rgba(91, 46, 255, 0.3);
+}
+
+/* Styling untuk radio button kustom */
+.radio-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: white;
+  border: 2px solid transparent;
+  border-radius: 0.75rem; /* rounded-xl */
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.radio-card input[type="radio"] {
+  display: none; /* Sembunyikan radio button asli */
+}
+
+/* Lingkaran luar kustom */
+.radio-custom-circle {
+  height: 24px;
+  width: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: border-color 0.2s ease-in-out;
+}
+
+/* Lingkaran dalam kustom (muncul saat checked) */
+.radio-custom-circle::before {
+  content: "";
+  height: 12px;
+  width: 12px;
+  background-color: #5b2eff;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Perubahan style saat radio button dipilih */
+.radio-card input[type="radio"]:checked + .radio-custom-circle {
+  border-color: #5b2eff;
+}
+.radio-card input[type="radio"]:checked + .radio-custom-circle::before {
+  transform: scale(1);
+}
+.radio-card:has(input[type="radio"]:checked) {
+  border-color: #5b2eff;
+}

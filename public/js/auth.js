@@ -13,15 +13,16 @@ function togglePassword(eyeIconId, passwordInputId, eyeOnSrc, eyeOffSrc) {
   eyeIcon.src = isPassword ? eyeOffSrc : eyeOnSrc;
 }
 
+// Fungsi yang sudah ada untuk login
 function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, errorMsgId, redirectUrl) {
   const loginForm = document.getElementById(loginFormId);
-  const loginButton = document.getElementById("loginButton");
+  const loginButton = document.getElementById("loginButton"); // Asumsi tombol login punya ID ini
   const buttonText = document.getElementById("buttonText");
   const loadingSpinner = document.getElementById("loadingSpinner");
   const errorMsg = document.getElementById(errorMsgId);
 
-  if (!loginForm || !loginButton || !buttonText || !loadingSpinner || !errorMsg) {
-    console.warn("One or more login form elements (button, spinner, etc.) not found. Check IDs in HTML.");
+  if (!loginForm) {
+    console.warn(`Login form with ID '${loginFormId}' not found.`);
     return;
   }
 
@@ -30,74 +31,153 @@ function handleLoginFormSubmit(loginFormId, emailInputId, passwordInputId, error
     const email = document.getElementById(emailInputId)?.value.trim();
     const password = document.getElementById(passwordInputId)?.value.trim();
 
-    errorMsg.classList.add("hidden");
+    // Sembunyikan pesan error sebelumnya
+    if (errorMsg) errorMsg.classList.add("hidden");
 
     if (!email || !password) {
+      if (errorMsg) {
+        errorMsg.textContent = "Email dan password tidak boleh kosong.";
+        errorMsg.classList.remove("hidden");
+      }
+      showSnackbar("Email dan password tidak boleh kosong!", "error");
+      return;
+    }
+
+    // Tampilkan loading
+    if (buttonText) buttonText.classList.add("hidden");
+    if (loadingSpinner) loadingSpinner.classList.remove("hidden");
+    if (loginButton) loginButton.disabled = true;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/accounts/api/login/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: email, password: password }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("accessToken", data.tokens.access);
+        if (data.tokens.refresh) {
+          localStorage.setItem("refreshToken", data.tokens.refresh);
+        }
+        showSnackbar("Login berhasil!", "success");
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1000);
+      } else {
+        let errorMessage = data.detail || "Login gagal. Periksa kembali kredensial Anda.";
+        if (errorMsg) {
+          errorMsg.textContent = errorMessage;
+          errorMsg.classList.remove("hidden");
+        }
+        showSnackbar(errorMessage, "error");
+      }
+    } catch (error) {
+      const msg = "Terjadi masalah pada jaringan atau server.";
+      if (errorMsg) {
+        errorMsg.textContent = msg;
+        errorMsg.classList.remove("hidden");
+      }
+      showSnackbar(msg, "error");
+      console.error("Login error:", error);
+    } finally {
+      // Sembunyikan loading
+      if (buttonText) buttonText.classList.remove("hidden");
+      if (loadingSpinner) loadingSpinner.classList.add("hidden");
+      if (loginButton) loginButton.disabled = false;
+    }
+  });
+}
+
+// Ganti fungsi handleRegisterFormSubmit Anda dengan yang ini
+function handleRegisterFormSubmit(formId, usernameId, firstNameId, lastNameId, emailId, cityId, phoneNumberId, passwordId, confirmPasswordId, errorMsgId, redirectUrl) {
+  const registerForm = document.getElementById(formId);
+  const registerButton = document.getElementById("registerButton");
+  const buttonText = document.getElementById("buttonText");
+  const loadingSpinner = document.getElementById("loadingSpinner");
+  const errorMsg = document.getElementById(errorMsgId);
+
+  if (!registerForm) {
+    console.warn(`Register form with ID '${formId}' not found.`);
+    return;
+  }
+
+  registerForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // 1. Ambil nilai dari semua input yang sudah diperbarui
+    const username = document.getElementById(usernameId)?.value.trim();
+    const first_name = document.getElementById(firstNameId)?.value.trim();
+    const last_name = document.getElementById(lastNameId)?.value.trim();
+    const email = document.getElementById(emailId)?.value.trim();
+    const city = document.getElementById(cityId)?.value.trim();
+    const phone_number = document.getElementById(phoneNumberId)?.value.trim();
+    const password = document.getElementById(passwordId)?.value.trim();
+    const password_confirm = document.getElementById(confirmPasswordId)?.value.trim();
+
+    errorMsg.classList.add("hidden");
+
+    // 2. Validasi client-side
+    if (!username || !first_name || !email || !city || !password || !password_confirm) {
+      errorMsg.textContent = "Semua kolom yang wajib (*), harus diisi.";
       errorMsg.classList.remove("hidden");
-      errorMsg.textContent = "Email and password are required.";
-      showSnackbar("Email and password are required!", "error");
+      showSnackbar("Lengkapi semua kolom wajib.", "error");
+      return;
+    }
+
+    if (password !== password_confirm) {
+      errorMsg.textContent = "Password dan konfirmasi password tidak cocok.";
+      errorMsg.classList.remove("hidden");
+      showSnackbar("Password tidak cocok.", "error");
       return;
     }
 
     buttonText.classList.add("hidden");
     loadingSpinner.classList.remove("hidden");
-    loginButton.disabled = true;
+    registerButton.disabled = true;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/accounts/api/login/`, {
+      // 3. [FIXED] Siapkan payload dengan struktur yang benar
+      const payload = {
+        username,
+        first_name,
+        last_name,
+        email,
+        city,
+        phone_number,
+        password,
+        password_confirm,
+      };
+
+      const response = await fetch(`${API_BASE_URL}/accounts/api/register/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: email, password: password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        const accessToken = data.tokens.access;
-
-        if (accessToken) {
-          localStorage.setItem("accessToken", accessToken);
-          if (data.tokens && data.tokens.refresh) {
-            localStorage.setItem("refreshToken", data.tokens.refresh);
-          }
-          console.log("Login successful! Access Token:", accessToken);
-          showSnackbar("Login berhasil!", "success");
-
-          setTimeout(() => {
-            window.location.href = redirectUrl;
-          }, 1000);
-        } else {
-          const msg = "Login successful, but no access token received (unexpected API response).";
-          errorMsg.classList.remove("hidden");
-          errorMsg.textContent = msg;
-          showSnackbar(msg, "error");
-          console.error("Login successful, but no access token received:", data);
-        }
+        showSnackbar("Registrasi berhasil! Anda akan diarahkan...", "success");
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1500);
       } else {
-        let errorMessage = "Login failed. Please check your credentials.";
-        if (data && data.detail) {
-          errorMessage = data.detail;
-        } else if (data && typeof data === "object") {
-          errorMessage = Object.values(data).flat().join(" ") || errorMessage;
-        }
-
-        errorMsg.classList.remove("hidden");
+        let errorMessage = Object.values(data).flat().join(" ");
         errorMsg.textContent = errorMessage;
+        errorMsg.classList.remove("hidden");
         showSnackbar(errorMessage, "error");
-        console.error("Login failed:", response.status, data);
       }
     } catch (error) {
-      const msg = `Network error or server unavailable: ${error.message}`;
-      errorMsg.classList.remove("hidden");
+      const msg = "Terjadi masalah pada jaringan atau server.";
       errorMsg.textContent = msg;
+      errorMsg.classList.remove("hidden");
       showSnackbar(msg, "error");
-      console.error("Network or server error during login:", error);
     } finally {
       buttonText.classList.remove("hidden");
       loadingSpinner.classList.add("hidden");
-      loginButton.disabled = false;
+      registerButton.disabled = false;
     }
   });
 }
