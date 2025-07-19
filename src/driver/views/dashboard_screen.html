@@ -11,50 +11,45 @@
       body {
         font-family: "Inter", sans-serif;
       }
+      #modalBox {
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      }
+      #requestDetailModal.show #modalBox {
+        opacity: 1;
+        transform: scale(1);
+      }
     </style>
   </head>
   <body class="bg-gray-50 min-h-screen pb-28">
-    <!-- Navbar -->
     <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <img src="/public/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
         <span class="font-bold text-lg">RescueGo</span>
       </div>
-      <img src="public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
+      <img id="userAvatar" src="/public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
     </header>
 
-    <!-- Main Content -->
-    <main class="py-12 px-12 md:px-12 lg:px-36">
-      <h1 class="text-4xl font-bold text-gray-800 mb-1">Halo, Abdul Hasan!</h1>
-      <p class="text-gray-600 text-md mb-6">Lihat kegiatan kamu hari ini</p>
+    <main class="py-8 px-6 md:px-12">
+      <h1 class="text-3xl font-bold text-gray-800 mb-1">Halo, <span id="driverName">...</span>!</h1>
+      <p class="text-gray-600 text-md mb-8">Lihat kegiatan kamu hari ini</p>
 
-      <!-- Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-        <div class="bg-white rounded-xl shadow px-4 py-24 text-center">
-          <p class="text-7xl font-bold text-[#5B2EFF]">0</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="bg-white rounded-xl shadow p-6 text-center">
+          <p id="requestsTodayCount" class="text-7xl font-bold text-[#5B2EFF]">0</p>
           <p class="text-gray-700 text-md mt-2">Permintaan hari ini</p>
         </div>
-        <div class="bg-white rounded-xl shadow px-4 py-24 text-center">
-          <p class="text-7xl font-bold text-[#5B2EFF]">0</p>
+        <div class="bg-white rounded-xl shadow p-6 text-center">
+          <p id="requestsCompletedCount" class="text-7xl font-bold text-[#5B2EFF]">0</p>
           <p class="text-gray-700 text-md mt-2">Permintaan diselesaikan</p>
-        </div>
-        <div class="bg-white rounded-xl shadow px-4 py-24 text-center">
-          <p class="text-7xl font-bold text-[#5B2EFF]">0</p>
-          <p class="text-gray-700 text-md mt-2">Jam bekerja hari ini</p>
         </div>
       </div>
 
-      <!-- Permintaan Saat Ini -->
       <section>
-        <h2 class="text-md font-semibold text-gray-700 mb-2">Permintaan saat ini</h2>
-        <button type="button" class="open-detail bg-white rounded-xl shadow py-8 px-8 flex items-center justify-between mb-2 w-full text-left transition hover:bg-gray-100 cursor-pointer">
-          <div class="flex items-center space-x-12">
-            <span class="text-yellow-500 text-2xl">⚠️</span>
-            <span class="text-xl font-semibold text-[#5B2EFF]">Abdul Wahid - Kecelakaan - RSUD Jakarta</span>
-          </div>
-          <span class="text-[#5B2EFF] text-2xl">›</span>
-        </button>
-        <div class="text-right mt-2">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Permintaan aktif saat ini</h2>
+        <div id="currentRequestContainer">
+          <p class="text-center text-gray-500">Memuat permintaan...</p>
+        </div>
+        <div class="text-right mt-4">
           <a href="request_screen.html" class="text-md text-[#5B2EFF] font-medium hover:underline">Lihat lainnya</a>
         </div>
       </section>
@@ -64,68 +59,34 @@
     <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-inner px-6 py-3 flex justify-center items-center border-t gap-x-12 md:gap-x-24 lg:gap-x-36">
       <a href="/src/driver/views/dashboard_screen.html" class="flex flex-col items-center text-[#5B2EFF] active-nav">
         <div class="bg-[#EFE8FF] p-2 rounded-full">
-          <img src="public/img/Home-Button-Active.svg" alt="Beranda" class="h-6 w-6" />
+          <img src="/public/img/Home-Button-Active.svg" alt="Beranda" class="h-6 w-6" />
         </div>
         <span class="text-xs mt-1 font-semibold">Beranda</span>
       </a>
 
       <a href="/src/driver/views/request_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="public/img/Request-Button.svg" alt="Request" class="h-6 w-6" />
+        <img src="/public/img/Request-Button.svg" alt="Request" class="h-6 w-6" />
         <span class="text-xs mt-1">Request</span>
       </a>
 
       <a href="/src/driver/views/vehicle_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="public/img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
+        <img src="/public/img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
         <span class="text-xs mt-1">Kendaraan</span>
       </a>
 
       <a href="/src/driver/views/profile_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="public/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" />
+        <img src="/public/img/Profile-Button.svg" alt="Profil" class="h-6 w-6" />
         <span class="text-xs mt-1">Profil</span>
       </a>
     </nav>
     <!-- Modal Detail -->
-    <div id="requestDetailModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-start justify-center pt-24">
-      <div id="modalBox" class="bg-white rounded-xl shadow-lg w-full max-w-md p-6 opacity-0 scale-95 transition-all duration-200 relative">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-lg font-bold text-[#5B2EFF] mx-auto">Detail</h2>
-          <button id="closeDetail" class="absolute right-4 text-[#5B2EFF] text-2xl font-bold hover:scale-110">✕</button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b pb-4">
-          <!-- Pasien -->
-          <div>
-            <h3 class="text-sm text-gray-700 font-bold mb-2">Pasien</h3>
-            <p class="text-sm"><span class="font-semibold">Nama:</span> Abdul Wahid</p>
-            <p class="text-sm"><span class="font-semibold">Umur:</span> 35</p>
-            <p class="text-sm"><span class="font-semibold">Jenis Kelamin:</span> Laki-laki</p>
-            <p class="text-sm"><span class="font-semibold">Keterangan:</span> Kecelakaan</p>
-          </div>
-
-          <!-- Reservasi -->
-          <div>
-            <h3 class="text-sm text-gray-700 font-bold mb-2">Reservasi</h3>
-            <p class="text-sm"><span class="font-semibold">Supir:</span> Abdul Hasan</p>
-            <p class="text-sm"><span class="font-semibold">Kendaraan:</span> Toyota Hiace</p>
-            <p class="text-sm"><span class="font-semibold">Status:</span> Pending</p>
-            <p class="text-sm"><span class="font-semibold">Timestamp:</span> 14.30</p>
-          </div>
-        </div>
-
-        <!-- Update Status -->
-        <div class="mt-6 text-center">
-          <h3 class="text-sm text-gray-700 font-bold mb-2">Perbarui Status</h3>
-          <select class="border border-[#5B2EFF] text-[#5B2EFF] font-semibold rounded-md px-4 py-2">
-            <option>Pending</option>
-            <option>Diterima</option>
-            <option>Menuju Lokasi</option>
-            <option>Selesai</option>
-          </select>
-        </div>
-      </div>
+    <div id="requestDetailModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div id="modalBox" class="bg-white rounded-xl shadow-lg w-full max-w-md p-6 opacity-0 scale-95 relative"></div>
     </div>
 
-    <script src="/src/driver/js/request-detail-modal.js"></script>
+    <script>
+      const API_BASE_URL = "http://127.0.0.1:8000";
+    </script>
+    <script src="/public/js/dashboardDriver.js"></script>
   </body>
 </html>

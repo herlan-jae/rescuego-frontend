@@ -86,11 +86,11 @@
           <div class="form-grid">
             <div class="form-group">
               <label>Nomor Polisi</label>
-              <input type="text" name="license_plate" />
+              <input type="text" name="license_plate" required />
             </div>
             <div class="form-group">
               <label>Tahun</label>
-              <input type="number" name="year" />
+              <input type="number" name="year" required />
             </div>
             <div class="form-group">
               <label>Tipe</label>
@@ -102,7 +102,7 @@
             </div>
             <div class="form-group">
               <label>Brand</label>
-              <input type="text" name="brand" />
+              <input type="text" name="brand" required />
             </div>
             <div class="form-group">
               <label>Kota</label>
@@ -116,18 +116,6 @@
               <label>Fasilitas</label>
               <input type="text" name="facilities" />
             </div>
-          </div>
-          <div class="form-group center">
-            <label>Status</label>
-            <select name="status">
-              <option value="aktif">Aktif</option>
-              <option value="nonaktif">Tidak Aktif</option>
-              <option value="perbaikan">Dalam Perbaikan</option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-outline" id="cancelAddAmbulance">Batal</button>
-            <button type="submit" class="btn-primary">Simpan</button>
           </div>
         </form>
       </div>
@@ -178,51 +166,12 @@
 
     <script src="/public/js/utils.js"></script>
     <script src="/public/js/logoutModal.js"></script>
-    <script>
-      setupLogoutModal("login_screen.html");
-    </script>
     <script src="/public/js/navActive.js"></script>
     <script src="/public/js/ambulances.js"></script>
-    <script src="/src/admin/js/script.js"></script>
-    <script src="/src/admin/js/addAmbulances.js"></script>
-
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+      if (typeof setupLogoutModal === "function") {
         setupLogoutModal("login_screen.html");
-        loadAmbulances("login_screen.html");
-
-        document.getElementById("ambulanceTableBody").addEventListener("click", function (event) {
-          if (event.target.classList.contains("link-detail")) {
-            const ambulanceId = event.target.dataset.id;
-            showAmbulanceDetailPopup(ambulanceId, "login_screen.html");
-            console.log("Tombol Lihat diklik untuk Ambulans ID:", ambulanceId);
-          }
-        });
-
-        const closePopupBtn = document.getElementById("closePopupBtn");
-        const ambulanceDetailPopupOverlay = document.getElementById("popupOverlay");
-        if (closePopupBtn && ambulanceDetailPopupOverlay) {
-          closePopupBtn.addEventListener("click", function () {
-            hideAmbulanceDetailPopup();
-          });
-          ambulanceDetailPopupOverlay.addEventListener("click", function (event) {
-            if (event.target === this) {
-              hideAmbulanceDetailPopup();
-            }
-          });
-        }
-
-        const deleteAmbulanceBtn = document.getElementById("deleteAmbulanceBtn");
-        if (deleteAmbulanceBtn) {
-          deleteAmbulanceBtn.addEventListener("click", function () {
-            if (currentAmbulanceId) {
-              deleteAmbulance(currentAmbulanceId, "login_screen.html");
-            } else {
-              showSnackbar("Tidak ada ambulans yang sedang dipilih untuk dihapus.", "error");
-            }
-          });
-        }
-      });
+      }
     </script>
   </body>
 </html>

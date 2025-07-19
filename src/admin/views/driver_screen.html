@@ -191,16 +191,14 @@
     </div>
 
     <script src="/public/js/utils.js"></script>
+    <script src="/public/js/apiHelper.js"></script>
     <script src="/public/js/logoutModal.js"></script>
-    <script>
-      setupLogoutModal("login_screen.html");
-    </script>
     <script src="/public/js/navActive.js"></script>
     <script src="/public/js/drivers.js"></script>
     <script src="/src/admin/js/script.js"></script>
     <script src="/src/admin/js/addDrivers.js"></script>
-
     <script>
+      // Kode inline yang memanggil fungsi-fungsi di atas
       document.addEventListener("DOMContentLoaded", function () {
         setupLogoutModal("login_screen.html");
         loadDrivers("login_screen.html");

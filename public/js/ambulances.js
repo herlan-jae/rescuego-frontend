@@ -1,299 +1,239 @@
-let currentAmbulanceId = null;
+document.addEventListener("DOMContentLoaded", function () {
+  const API_BASE_URL = "http://127.0.0.1:8000/ambulances/api/";
 
-async function loadAmbulances(redirectUrl) {
-  const ambulanceTableBody = document.getElementById("ambulanceTableBody");
-  if (!ambulanceTableBody) {
-    console.error("Elemen #ambulanceTableBody tidak ditemukan.");
-    return;
+  // === HELPER FUNCTIONS ===
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
   }
+  const csrftoken = getCookie("csrftoken");
 
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    console.warn("No access token found. Redirecting to login for ambulances.");
-    showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
+  function showSnackbar(message, type = "success") {
+    const snackbar = document.getElementById("snackbar");
+    if (!snackbar) return;
+    snackbar.textContent = message;
+    snackbar.className = `snackbar show ${type}`;
     setTimeout(() => {
-      window.location.href = redirectUrl;
-    }, 1000);
-    return;
+      snackbar.className = snackbar.className.replace("show", "");
+    }, 3000);
   }
 
-  ambulanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Memuat data ambulans...</td></tr>`;
+  // PERBAIKAN: Fungsi pembantu terpusat untuk fetch API
+  async function apiFetch(url, options = {}) {
+    const headers = {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken,
+      ...options.headers,
+    };
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/ambulances/api/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const config = {
+      credentials: "include", // Selalu sertakan kredensial (cookie)
+      ...options,
+      headers,
+    };
 
-    if (response.ok) {
-      const ambulancesData = await response.json();
-      console.log("Ambulances data fetched successfully:", ambulancesData);
-      showSnackbar("Data ambulans berhasil dimuat!", "success");
+    const response = await fetch(url, config);
 
-      ambulanceTableBody.innerHTML = "";
+    if (!response.ok) {
+      const errorData = await response.json();
+      // PERBAIKAN: Ubah error JSON menjadi string yang mudah dibaca
+      const errorMessage = Object.entries(errorData)
+        .map(([key, value]) => `${key}: ${value.join(", ")}`)
+        .join("\n");
+      throw new Error(errorMessage || "Terjadi kesalahan pada server.");
+    }
 
-      if (ambulancesData.results && ambulancesData.results.length === 0) {
-        ambulanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Tidak ada data ambulans.</td></tr>`;
+    // Untuk method DELETE, response body bisa kosong
+    if (response.status === 204) {
+      return null;
+    }
+
+    return response.json();
+  }
+
+  // === API CALLS ===
+  async function fetchAmbulances() {
+    const tableBody = document.getElementById("ambulanceTableBody");
+    tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Memuat data ambulans...</td></tr>`;
+
+    try {
+      const ambulances = await apiFetch(API_BASE_URL); // Menggunakan helper
+      tableBody.innerHTML = "";
+
+      if (!ambulances || ambulances.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Belum ada data ambulans.</td></tr>`;
         return;
       }
 
-      ambulancesData.results.forEach((ambulance) => {
-        const ambulanceIdForData = ambulance.id ? String(ambulance.id) : "";
-
+      ambulances.forEach((ambulance) => {
         const row = `
-                    <tr>
-                        <td>${ambulance.id || "N/A"}</td>
-                        <td>${ambulance.license_plate || "N/A"}</td>
-                        <td>${ambulance.type || "N/A"}</td>
-                        <td>${ambulance.brand || "N/A"}/${ambulance.model || "N/A"}</td>
-                        <td class="status-cell">${ambulance.status || "N/A"}</td>
-                        <td>${ambulance.city || "N/A"}</td>
-                        <td><span class="link-detail cursor-pointer" data-id="${ambulanceIdForData}">Lihat</span></td>
-                    </tr>
-                `;
-        ambulanceTableBody.insertAdjacentHTML("beforeend", row);
+          <tr>
+            <td>${ambulance.id}</td>
+            <td>${ambulance.license_plate}</td>
+            <td>${ambulance.type || "-"}</td>
+            <td>${ambulance.brand || ""} ${ambulance.model || ""}</td>
+            <td><span class="status ${ambulance.status}">${ambulance.status.charAt(0).toUpperCase() + ambulance.status.slice(1)}</span></td>
+            <td>${ambulance.city || "-"}</td>
+            <td><span class="link-detail cursor-pointer" data-id="${ambulance.id}">Lihat</span></td>
+          </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
       });
-    } else if (response.status === 401) {
-      console.error("Unauthorized: Token invalid or expired for ambulances. Redirecting.");
-      showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      setTimeout(() => {
-        window.location.href = redirectUrl;
-      }, 1000);
-    } else {
-      const errorData = await response.json().catch(() => ({ detail: `Server responded with status ${response.status}` }));
-      const errorMessage = errorData.detail || "Failed to fetch ambulances.";
-      console.error("Error fetching ambulances:", response.status, errorData);
-      showSnackbar(`Gagal memuat ambulans: ${errorMessage}`, "error");
-      ambulanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-red-500">Gagal memuat data: ${errorMessage}</td></tr>`;
+    } catch (error) {
+      console.error("Error fetching ambulances:", error);
+      tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Gagal memuat data.</td></tr>`;
+      showSnackbar(error.message, "error");
     }
-  } catch (error) {
-    console.error("Network error or server unavailable for ambulances:", error);
-    showSnackbar(`Kesalahan koneksi: ${error.message}`, "error");
-    ambulanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-red-500">Kesalahan koneksi: ${error.message}</td></tr>`;
-  }
-}
-
-function hideAmbulanceDetailPopup() {
-  const popupOverlay = document.getElementById("popupOverlay");
-  if (popupOverlay) {
-    popupOverlay.classList.remove("show");
-    popupOverlay.classList.add("hidden");
-    document.body.classList.remove("no-scroll");
-    currentAmbulanceId = null;
-  }
-}
-
-async function showAmbulanceDetailPopup(ambulanceId, redirectUrl) {
-  const popupOverlay = document.getElementById("popupOverlay");
-  const detailAmbulancePlate = document.getElementById("detailAmbulancePlate");
-  const detailAmbulanceType = document.getElementById("detailAmbulanceType");
-  const detailAmbulanceBrand = document.getElementById("detailAmbulanceBrand");
-  const detailAmbulanceModel = document.getElementById("detailAmbulanceModel");
-  const detailAmbulanceYear = document.getElementById("detailAmbulanceYear");
-  const detailAmbulanceCapacity = document.getElementById("detailAmbulanceCapacity");
-  const detailAmbulanceCity = document.getElementById("detailAmbulanceCity");
-  const detailAmbulanceFacilities = document.getElementById("detailAmbulanceFacilities");
-
-  const editAmbulanceBtn = document.getElementById("editAmbulanceBtn");
-  const deleteAmbulanceBtn = document.getElementById("deleteAmbulanceBtn");
-
-  if (
-    !popupOverlay ||
-    !detailAmbulancePlate ||
-    !detailAmbulanceType ||
-    !detailAmbulanceBrand ||
-    !detailAmbulanceModel ||
-    !detailAmbulanceYear ||
-    !detailAmbulanceCapacity ||
-    !detailAmbulanceCity ||
-    !detailAmbulanceFacilities ||
-    !editAmbulanceBtn ||
-    !deleteAmbulanceBtn
-  ) {
-    console.error("One or more elements for Ambulance Detail popup are missing. Check IDs in ambulance_screen.html.");
-    showSnackbar("Gagal menampilkan detail: Beberapa elemen tidak ditemukan.", "error");
-    return;
   }
 
-  detailAmbulancePlate.textContent = "Memuat...";
-  detailAmbulanceType.textContent = "Memuat...";
-  detailAmbulanceBrand.textContent = "Memuat...";
-  detailAmbulanceModel.textContent = "Memuat...";
-  detailAmbulanceYear.textContent = "Memuat...";
-  detailAmbulanceCapacity.textContent = "Memuat...";
-  detailAmbulanceCity.textContent = "Memuat...";
-  detailAmbulanceFacilities.textContent = "Memuat...";
+  async function saveAmbulance(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
-  popupOverlay.classList.remove("hidden");
-  popupOverlay.classList.add("show");
-  document.body.classList.add("no-scroll");
+    const isEditMode = formMode === "edit";
+    const method = isEditMode ? "PUT" : "POST";
+    const url = isEditMode ? `${API_BASE_URL}${currentAmbulanceId}/` : API_BASE_URL;
 
-  const accessToken = localStorage.getItem("accessToken");
-  if (!accessToken) {
-    console.warn("No access token found. Redirecting to login for ambulance detail.");
-    showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setTimeout(() => {
-      window.location.href = redirectUrl;
-    }, 1000);
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/ambulances/api/${ambulanceId}/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (response.ok) {
-      const ambulanceDetail = await response.json();
-      console.log("Ambulance detail fetched successfully:", ambulanceDetail);
-      showSnackbar("Detail ambulans berhasil dimuat!", "success");
-
-      detailAmbulancePlate.textContent = ambulanceDetail.license_plate || "N/A";
-      detailAmbulanceType.textContent = ambulanceDetail.type || "N/A";
-      detailAmbulanceBrand.textContent = ambulanceDetail.brand || "N/A";
-      detailAmbulanceModel.textContent = ambulanceDetail.model || "N/A";
-      detailAmbulanceYear.textContent = ambulanceDetail.year || "N/A";
-      detailAmbulanceCapacity.textContent = ambulanceDetail.capacity || "N/A";
-      detailAmbulanceCity.textContent = ambulanceDetail.city || "N/A";
-      detailAmbulanceFacilities.textContent = ambulanceDetail.facilities || "N/A";
-
-      currentAmbulanceId = ambulanceDetail.id;
-
-      editAmbulanceBtn.onclick = () => {
-        hideAmbulanceDetailPopup();
-        populateAmbulanceFormForEdit(ambulanceDetail);
-      };
-
-      deleteAmbulanceBtn.onclick = () => {
-        deleteAmbulance(currentAmbulanceId, redirectUrl);
-      };
-    } else if (response.status === 401) {
-      console.error("Unauthorized: Token invalid or expired for ambulance detail. Redirecting.");
-      showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      setTimeout(() => {
-        window.location.href = redirectUrl;
-      }, 1000);
-    } else if (response.status === 404) {
-      console.error("Ambulance not found:", ambulanceId);
-      showSnackbar(`Ambulans dengan ID ${ambulanceId} tidak ditemukan.`, "error");
-      hideAmbulanceDetailPopup();
-    } else {
-      const errorData = await response.json().catch(() => ({ detail: `Server responded with status ${response.status}` }));
-      const errorMessage = errorData.detail || "Failed to fetch ambulance detail.";
-      console.error("Error fetching ambulance detail:", response.status, errorData);
-      showSnackbar(`Gagal memuat detail ambulans: ${errorMessage}`, "error");
-      hideAmbulanceDetailPopup();
+    try {
+      await apiFetch(url, { method: method, body: JSON.stringify(data) });
+      hidePopup(elements.formPopup);
+      showSnackbar(`Data ambulans berhasil ${isEditMode ? "diperbarui" : "ditambahkan"}.`);
+      fetchAmbulances();
+    } catch (error) {
+      console.error("Error saving ambulance:", error);
+      showSnackbar(error.message, "error");
     }
-  } catch (error) {
-    console.error("Network error or server unavailable for ambulance detail:", error);
-    showSnackbar(`Kesalahan koneksi saat memuat detail ambulans: ${error.message}`, "error");
-    hideAmbulanceDetailPopup();
   }
 
-  function populateAmbulanceFormForEdit(ambulanceData) {
-    const addAmbulanceOverlay = document.getElementById("addAmbulanceOverlay");
-    const addAmbulanceForm = document.getElementById("addAmbulanceForm");
-    const popupTitle = addAmbulanceForm.querySelector(".popup-title");
+  async function deleteAmbulance() {
+    if (!currentAmbulanceId) return;
 
-    if (!addAmbulanceOverlay || !addAmbulanceForm || !popupTitle) {
-      console.error("Elements for Add/Edit Ambulance form not found.");
-      showSnackbar("Gagal menyiapkan form edit ambulans.", "error");
-      return;
+    if (confirm("Apakah Anda yakin ingin menghapus data ambulans ini?")) {
+      try {
+        await apiFetch(`${API_BASE_URL}${currentAmbulanceId}/`, { method: "DELETE" });
+        hidePopup(elements.detailPopup);
+        showSnackbar("Data ambulans berhasil dihapus.");
+        fetchAmbulances();
+      } catch (error) {
+        console.error("Error deleting ambulance:", error);
+        showSnackbar(error.message, "error");
+      }
     }
+  }
 
-    popupTitle.textContent = "Edit Detail Ambulans";
+  // === POPUP & FORM LOGIC ===
 
-    addAmbulanceForm.elements.license_plate.value = ambulanceData.license_plate || "";
-    addAmbulanceForm.elements.year.value = ambulanceData.year || "";
-    addAmbulanceForm.elements.type.value = ambulanceData.type || "";
-    addAmbulanceForm.elements.capacity.value = ambulanceData.capacity || "";
-    addAmbulanceForm.elements.brand.value = ambulanceData.brand || "";
-    addAmbulanceForm.elements.city.value = ambulanceData.city || "";
-    addAmbulanceForm.elements.model.value = ambulanceData.model || "";
-    addAmbulanceForm.elements.facilities.value = ambulanceData.facilities || "";
-    addAmbulanceForm.elements.status.value = ambulanceData.status || "aktif";
+  const elements = {
+    tableBody: document.getElementById("ambulanceTableBody"),
+    detailPopup: document.getElementById("popupOverlay"),
+    formPopup: document.getElementById("addAmbulanceOverlay"),
+    addAmbulanceForm: document.getElementById("addAmbulanceForm"),
+    showAddButton: document.getElementById("showAddAmbulanceForm"),
+    closePopupBtn: document.getElementById("closePopupBtn"),
+    cancelAddButton: document.getElementById("cancelAddAmbulance"),
+    editButton: document.getElementById("editAmbulanceBtn"),
+    deleteButton: document.getElementById("deleteAmbulanceBtn"),
+  };
 
-    addAmbulanceOverlay.classList.remove("hidden");
-    addAmbulanceOverlay.classList.add("show");
+  let currentAmbulanceId = null;
+  let formMode = "add"; // 'add' or 'edit'
+
+  function showPopup(popupElement) {
+    popupElement.classList.remove("hidden");
+    setTimeout(() => popupElement.classList.add("show"), 10);
     document.body.classList.add("no-scroll");
   }
 
-  async function deleteAmbulance(ambulanceId, redirectUrl) {
-    if (!ambulanceId) {
-      showSnackbar("ID ambulans tidak valid untuk dihapus.", "error");
-      return;
-    }
+  function hidePopup(popupElement) {
+    popupElement.classList.remove("show");
+    setTimeout(() => {
+      popupElement.classList.add("hidden");
+      document.body.classList.remove("no-scroll");
+    }, 300);
+  }
 
-    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus ambulans ini?");
-    if (!confirmDelete) {
-      return;
-    }
+  async function showFormPopup(id = null) {
+    const { formPopup, addAmbulanceForm: form } = elements;
+    const formTitle = formPopup.querySelector(".popup-title");
+    form.reset();
 
-    showSnackbar("Menghapus ambulans...", "info");
-
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
-      setTimeout(() => {
-        window.location.href = redirectUrl;
-      }, 1000);
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/ambulances/api/${ambulanceId}/`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (response.ok) {
-        console.log("Ambulans berhasil dihapus:", ambulanceId);
-        showSnackbar("Ambulans berhasil dihapus!", "success");
-
-        const popupOverlay = document.getElementById("popupOverlay");
-        if (popupOverlay) {
-          popupOverlay.classList.remove("show");
-          popupOverlay.classList.add("hidden");
-          document.body.classList.remove("no-scroll");
+    if (id) {
+      formMode = "edit";
+      currentAmbulanceId = id;
+      formTitle.textContent = "Edit Ambulans";
+      try {
+        const data = await apiFetch(`${API_BASE_URL}${id}/`);
+        for (const key in data) {
+          if (form.elements[key]) {
+            form.elements[key].value = data[key];
+          }
         }
-
-        loadAmbulances(redirectUrl);
-        currentAmbulanceId = null;
-      } else if (response.status === 401) {
-        console.error("Unauthorized: Token invalid or expired for delete. Redirecting.");
-        showSnackbar("Sesi Anda telah berakhir. Silakan login kembali.", "error");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 1000);
-      } else if (response.status === 404) {
-        console.error("Ambulans tidak ditemukan untuk dihapus:", ambulanceId);
-        showSnackbar(`Ambulans dengan ID ${ambulanceId} tidak ditemukan.`, "error");
-      } else {
-        const errorData = await response.json().catch(() => ({ detail: `Server responded with status ${response.status}` }));
-        const errorMessage = errorData.detail || "Failed to delete ambulance.";
-        console.error("Error deleting ambulance:", response.status, errorData);
-        showSnackbar(`Gagal menghapus ambulans: ${errorMessage}`, "error");
+      } catch (error) {
+        showSnackbar(error.message, "error");
+        return;
       }
+    } else {
+      formMode = "add";
+      currentAmbulanceId = null;
+      formTitle.textContent = "Tambah Baru";
+    }
+    showPopup(formPopup);
+  }
+
+  async function showDetailPopup(id) {
+    currentAmbulanceId = id;
+    try {
+      const data = await apiFetch(`${API_BASE_URL}${id}/`);
+      document.getElementById("detailAmbulancePlate").textContent = data.license_plate || "-";
+      document.getElementById("detailAmbulanceType").textContent = data.type || "-";
+      document.getElementById("detailAmbulanceBrand").textContent = data.brand || "-";
+      document.getElementById("detailAmbulanceModel").textContent = data.model || "-";
+      document.getElementById("detailAmbulanceYear").textContent = data.year || "-";
+      document.getElementById("detailAmbulanceCapacity").textContent = data.capacity || "-";
+      document.getElementById("detailAmbulanceCity").textContent = data.city || "-";
+      document.getElementById("detailAmbulanceFacilities").textContent = data.facilities || "-";
+      showPopup(elements.detailPopup);
     } catch (error) {
-      console.error("Network error or server unavailable for delete:", error);
-      showSnackbar(`Kesalahan koneksi saat menghapus ambulans: ${error.message}`, "error");
+      console.error("Error showing detail:", error);
+      showSnackbar(error.message, "error");
     }
   }
-}
+
+  // === EVENT LISTENERS ===
+
+  elements.showAddButton?.addEventListener("click", () => showFormPopup());
+  elements.addAmbulanceForm?.addEventListener("submit", saveAmbulance);
+  elements.deleteButton?.addEventListener("click", deleteAmbulance);
+
+  elements.editButton?.addEventListener("click", () => {
+    hidePopup(elements.detailPopup);
+    setTimeout(() => showFormPopup(currentAmbulanceId), 300);
+  });
+
+  elements.tableBody?.addEventListener("click", (e) => {
+    if (e.target.classList.contains("link-detail")) {
+      const id = e.target.dataset.id;
+      showDetailPopup(id);
+    }
+  });
+
+  elements.closePopupBtn?.addEventListener("click", () => hidePopup(elements.detailPopup));
+  elements.cancelAddButton?.addEventListener("click", () => hidePopup(elements.formPopup));
+  elements.detailPopup?.addEventListener("click", (e) => e.target === elements.detailPopup && hidePopup(elements.detailPopup));
+  elements.formPopup?.addEventListener("click", (e) => e.target === elements.formPopup && hidePopup(elements.formPopup));
+
+  // Inisialisasi
+  fetchAmbulances();
+});

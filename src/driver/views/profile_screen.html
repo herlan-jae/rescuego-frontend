@@ -4,113 +4,128 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil - RescueGo</title>
-    <link rel="icon" href="assets/img/RescueGo-SideBarLogo.svg" />
+    <link rel="icon" href="/public/img/RescueGo-SideBarLogo.svg" />
+
+    <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="stylesheet" href="/src/admin/css/style.css" />
+    <link rel="stylesheet" href="/src/user/css/profile.css" />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
-      body {
-        font-family: "Inter", sans-serif;
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
 
-  <body class="bg-gray-50 min-h-screen pb-28">
-    <!-- Navbar -->
-    <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center">
+  <body class="bg-gray-50 min-h-screen">
+    <header class="bg-[#5B2EFF] text-white px-6 py-4 flex justify-between items-center shadow-md">
       <div class="flex items-center space-x-2">
-        <img src="assets/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
+        <img src="/public/img/RescueGo-SideBarLogo.svg" alt="RescueGo Logo" class="h-8" />
         <span class="font-bold text-lg">RescueGo</span>
       </div>
-      <img src="assets/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
+      <img src="/public/img/AvatarProfile-MockUp.svg" alt="Avatar" class="h-10 w-10 rounded-full" />
     </header>
 
-    <!-- Main Content -->
-    <main class="px-6 py-8 max-w-4xl mx-auto">
-      <h1 class="text-center text-3xl font-bold text-[#5B2EFF] mb-6">Profil</h1>
-      <div class="flex flex-col md:flex-row md:items-start items-center gap-6">
-        <img src="assets/img/AvatarProfile-MockUp.svg" alt="Foto Profil" class="w-24 h-24 rounded-full" />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Username</label>
-            <input type="text" value="wahidabdul123" class="w-full border border-gray-300 rounded-md px-4 py-2" />
+    <main class="px-4 sm:px-6 py-8 max-w-4xl mx-auto pb-28">
+      <h1 class="text-2xl font-bold text-gray-800 mb-6">Profil Pengguna</h1>
+
+      <form id="profileForm" class="bg-white p-6 sm:p-8 rounded-xl shadow-sm">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+          <div class="flex-shrink-0">
+            <img src="/public/img/AvatarProfile-MockUp.svg" alt="Foto Profil" class="w-28 h-28 rounded-full shadow-md" />
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Lengkap</label>
-            <input type="text" value="Abdul Wahid" class="w-full border border-gray-300 rounded-md px-4 py-2" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 w-full">
+            <div>
+              <label for="username" class="block text-sm font-semibold text-gray-600 mb-2">Username</label>
+              <input id="username" type="text" class="input-field input-disabled" disabled />
+            </div>
+            <div>
+              <label for="driver_license_number" class="block text-sm font-semibold text-gray-600 mb-2">Nomor SIM</label>
+              <input id="driver_license_number" type="text" class="input-field" placeholder="e.g. 00-00-00-001" />
+            </div>
+            <div>
+              <label for="full_name" class="block text-sm font-semibold text-gray-600 mb-2">Nama Lengkap</label>
+              <input id="full_name" type="text" class="input-field input-disabled" disabled />
+            </div>
+            <div>
+              <label for="phone_number" class="block text-sm font-semibold text-gray-600 mb-2">Nomor Telepon</label>
+              <input id="phone_number" type="tel" class="input-field" placeholder="e.g. 0888-0888-0888" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="email" class="block text-sm font-semibold text-gray-600 mb-2">Email</label>
+              <input id="email" type="email" class="input-field input-disabled" disabled />
+            </div>
+            <div>
+              <label for="city" class="block text-sm font-semibold text-gray-600 mb-2">Kota</label>
+              <input id="city" type="text" class="input-field" placeholder="e.g. Jakarta Pusat" required />
+            </div>
+            <div>
+              <label for="status" class="block text-sm font-semibold text-gray-600 mb-2">Status</label>
+              <select id="status" class="input-field">
+                <option value="available">Aktif</option>
+                <option value="busy">Sibuk</option>
+                <option value="offline">Tidak Aktif</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Email</label>
-            <input type="email" value="wahidabdul123@mail.com" class="w-full border border-gray-300 rounded-md px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Nomor SIM</label>
-            <input type="text" value="00-00-00-001" class="w-full border border-gray-300 rounded-md px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Nomor Telepon</label>
-            <input type="text" value="0888-0888-0888" class="w-full border border-gray-300 rounded-md px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Kota</label>
-            <input type="text" value="Jakarta Pusat" class="w-full border border-gray-300 rounded-md px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-gray-600 mb-1">Status</label>
-            <select class="w-full border border-[#5B2EFF] text-[#5B2EFF] font-semibold rounded-md px-4 py-2">
-              <option selected>Aktif</option>
-              <option>Nonaktif</option>
-            </select>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mt-8 pt-6 border-t border-gray-200">
+          <button id="cancelBtn" type="button" class="w-full sm:w-auto px-8 py-2.5 border-2 border-[#5B2EFF] text-[#5B2EFF] font-semibold rounded-lg hover:bg-purple-50 transition">Batal</button>
+          <button id="saveBtn" type="submit" class="w-full sm:w-auto px-8 py-2.5 bg-[#5B2EFF] text-white font-semibold rounded-lg hover:bg-[#4d25d4] transition">Simpan</button>
+        </div>
+      </form>
+
+      <div class="mt-8 text-center">
+        <button id="logoutBtn" class="bg-red-50 text-red-600 font-semibold py-3 px-6 rounded-lg hover:bg-red-100 transition">Keluar</button>
+      </div>
+      <div id="logoutModal" class="hidden">
+        <div id="logoutModalContent">
+          <h2 class="modal-title">Apakah Anda yakin ingin keluar?</h2>
+          <div class="modal-actions">
+            <button id="cancelLogout" class="btn-outline">Batal</button>
+            <button id="confirmLogout" class="btn-primary">Keluar</button>
           </div>
         </div>
       </div>
-
-      <div class="flex justify-between items-center gap-4 mt-8">
-        <button id="cancelBtn" class="w-full py-3 border-2 border-[#5B2EFF] text-[#5B2EFF] font-semibold rounded-md">Batal</button>
-        <button id="saveBtn" class="w-full py-3 bg-[#5B2EFF] text-white font-semibold rounded-md">Simpan</button>
-      </div>
-
-      <button id="logoutBtn" class="mt-6 bg-red-600 text-white font-semibold py-3 px-6 rounded-md block mx-auto">Keluar</button>
     </main>
 
-    <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-inner px-6 py-3 flex justify-center items-center border-t gap-x-12 md:gap-x-24 lg:gap-x-36">
       <a href="dashboard_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Home-Button.svg" alt="Beranda" class="h-6 w-6" />
+        <img src="/public//img/Home-Button.svg" alt="Beranda" class="h-6 w-6" />
         <span class="text-xs mt-1">Beranda</span>
       </a>
       <a href="request_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Request-Button.svg" alt="Request" class="h-6 w-6" />
+        <img src="/public//img/Request-Button.svg" alt="Request" class="h-6 w-6" />
         <span class="text-xs mt-1">Request</span>
       </a>
       <a href="vehicle_screen.html" class="flex flex-col items-center text-gray-500 hover:text-[#5B2EFF]">
-        <img src="assets/img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
+        <img src="/public//img/Vehicle-Button.svg" alt="Kendaraan" class="h-6 w-6" />
         <span class="text-xs mt-1">Kendaraan</span>
       </a>
       <a href="profile_screen.html" class="flex flex-col items-center text-[#5B2EFF]">
         <div class="bg-[#EFE8FF] p-2 rounded-full">
-          <img src="assets/img/Profile-Button-Active.svg" alt="Profil" class="h-6 w-6" />
+          <img src="/public//img/Profile-Button-Active.svg" alt="Profil" class="h-6 w-6" />
         </div>
         <span class="text-xs mt-1 font-semibold">Profil</span>
       </a>
     </nav>
 
-    <!-- Modal Logout -->
-    <div id="logoutModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300">
-      <div class="bg-white rounded-lg shadow-lg p-6 w-80 scale-95 opacity-0 transition-all duration-300" id="logoutModalContent">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4 text-center">Apakah Anda yakin ingin keluar?</h2>
-        <div class="flex justify-between mt-4">
-          <button id="cancelLogout" class="px-4 py-2 text-[#5B2EFF] font-semibold border border-[#5B2EFF] rounded-md hover:bg-[#F3EEFF] w-1/2 mr-2">Batal</button>
-          <button id="confirmLogout" class="px-4 py-2 bg-[#5B2EFF] text-white font-semibold rounded-md hover:bg-[#4723cc] w-1/2 ml-2">Keluar</button>
-        </div>
-      </div>
+    <div id="snackbar" class="snackbar hidden">
+      <span id="snackbarMessage"></span>
     </div>
 
-    <!-- Toast -->
-    <div id="toastSuccess" class="fixed bottom-28 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg text-sm font-medium hidden z-50">Data berhasil disimpan!</div>
-
-    <!-- Scripts -->
-    <script src="assets/js/logout-modal.js"></script>
-    <script src="assets/js/profile-toast.js"></script>
-    <script src="assets/js/nav-active.js"></script>
+    <script src="/public/js/utils.js"></script>
+    <script src="/public/js/logoutModal.js"></script>
+    <script>
+      setupLogoutModal("login_screen.html");
+    </script>
+    <script src="/public/js/driverProfiles.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setupLogoutModal("login_screen.html");
+      });
+    </script>
   </body>
 </html>
